@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>global.eska.ddk</groupId>
+        <artifactId>keygen</artifactId>
+        <version>1.0.0</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>lib</artifactId>
+
+    <repositories>
+        <!-- https://mvnrepository.com/artifact/io.github.novacrypto/BIP39 -->
+        <repository>
+            <id>spring-plugins-repository</id>
+            <name>Spring Plugins Repository</name>
+            <url>http://repo.spring.io/plugins-release/</url>
+        </repository>
+        <repository>
+            <id>lazysodium-java</id>
+            <url>https://dl.bintray.com/terl/lazysodium-maven</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/io.github.novacrypto/BIP39 -->
+        <dependency>
+            <groupId>io.github.novacrypto</groupId>
+            <artifactId>BIP39</artifactId>
+            <version>0.1.9</version>
+        </dependency>
+        <dependency>
+            <groupId>com.goterl.lazycode</groupId>
+            <artifactId>lazysodium-java</artifactId>
+            <version>${lazysodium.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna</artifactId>
+            <version>${jna.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.6</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>
