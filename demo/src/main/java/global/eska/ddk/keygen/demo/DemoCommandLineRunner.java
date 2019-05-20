@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+
 @Slf4j
 @Component
 public class DemoCommandLineRunner implements CommandLineRunner {
@@ -43,7 +45,7 @@ public class DemoCommandLineRunner implements CommandLineRunner {
         log.info("secret key: {}", keyPair.getSecretKey());
         log.info("secret key hex: {}", keyPair.getSecretKeyHex());
 
-        long address = accountCreator.getAddressByPublicKey(keyPair.getPublicKey());
+        BigDecimal address = accountCreator.getAddressByPublicKey(keyPair.getPublicKey());
 
         log.info("DDK address generated successful: {}", address);
     }
