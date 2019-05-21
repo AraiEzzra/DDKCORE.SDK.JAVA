@@ -1,7 +1,9 @@
 package global.eska.ddk.keygen.account;
 
-public interface AccountCreator {
-    long getAddressByPublicKey(byte[] publicKey);
+import java.math.BigInteger;
 
-    long getAddressByPublicKey(String publicKey);
+public interface AccountCreator {
+    BigInteger getAddressByPublicKey(byte[] publicKey);
+
+    BigInteger getAddressByPublicKey(String publicKey);
 }
