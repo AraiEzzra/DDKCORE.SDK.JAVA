@@ -1,14 +1,16 @@
 package global.eska.ddk.keygen.utils;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 
 public interface Etalon {
     static final String PASSPHRASE =
             "assume dynamic woman audit any join category castle economy assume balcony inflict";
+    static final String NEW_PASSPHRASE =
+            "use sugar lesson crazy dirt project company erupt marriage small defy throw";
 
     static final String PUBLIC_KEY_HEX = "f4cd70d17938f5953ea4317d461bd092592b79a086222657fc00abc7d01dd9cc";
 
-    final BigInteger ADDRESS = new BigInteger("4793028192854197360");
+    final BigDecimal ADDRESS = new BigDecimal("4793028192854197360");
 
     static final byte[] PASSPHRASE_HASH = {
             6, 36, (byte) 190, (byte) 241, 84, (byte) 176, (byte) 181, 125, (byte) 252, (byte) 165, 63, (byte) 203, 94,
