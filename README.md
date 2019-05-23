@@ -30,3 +30,40 @@ After installation you can use library in maven projects by adding dependency:
             <version>1.0.0</version>
         </dependency>
 ```
+
+
+
+### How it works:
+```java
+    // Initialise PassphraseGenerator for create random passphrase
+    PassphraseGenerator passphraseGenerator = new DDKPathPhraseGenerator();
+    // Create new random passphrase
+    String passphrase = passphraseGenerator.createPassphrase();
+    
+    // Initialise LazySodium for generate KeyPair
+    LazySodiumJava lazySodium = new LazySodiumJava(new SodiumJava());
+
+    // Initialise KeyPairCreator for create keyPair by passphrase
+    KeyPairCreator keyPairCreator = new DDKKeyPairCreator(lazySodium);
+    
+    // Initialise AccountCreator for generate detached account
+    // If you create send transaction account will be create in the network
+    AccountCreator accountCreator = new DDKAccountCreator();
+    
+    // Create KeyPair by passphrase
+    // Key pair contains hash public key and hash secret key
+    KeyPair keyPair = keyPairCreator.createKeyPair(passphrase);
+    
+    // Get address by public key
+    BigInteger address = accountCreator.getAddressByPublicKey(keyPair.getPublicKey());
+
+```
+
+#### For fill funds to customer's account create send transaction to customer's account address from crypto exchange account
+#### For receive funds from customer's account create send transaction from customer's address to crypto exchange account
+
+
+### For create transaction:
+Please view the 
+[documentation](https://github.com/AraiEzzra/DDKCORE/blob/master/docs/api/transaction.md#create-transaction) 
+for a more comprehensive guide.
