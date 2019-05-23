@@ -33,7 +33,7 @@ After installation you can use library in maven projects by adding dependency:
 
 
 
-###How it works:
+### How it works:
 ```java
     // Initialise PassphraseGenerator for create random passphrase
     PassphraseGenerator passphraseGenerator = new DDKPathPhraseGenerator();
@@ -59,7 +59,11 @@ After installation you can use library in maven projects by adding dependency:
 
 ```
 
-###For create transaction:
+#### For fill funds to customer's account create send transaction to customer's account address from crypto exchange account
+#### For receive funds from customer's account create send transaction from customer's address to crypto exchange account
+
+
+### For create transaction:
 Please view the 
 [documentation](https://github.com/AraiEzzra/DDKCORE/blob/master/docs/api/transaction.md#create-transaction) 
 for a more comprehensive guide.
