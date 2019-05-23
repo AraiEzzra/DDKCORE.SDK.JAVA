@@ -17,9 +17,7 @@ import java.math.BigDecimal;
 
 import static global.eska.ddk.keygen.utils.Etalon.*;
 import static global.eska.ddk.keygen.utils.HashUtils.sha256;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 @Log
 public class KeyPairCreatorTest {

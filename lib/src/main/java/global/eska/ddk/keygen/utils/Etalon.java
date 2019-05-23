@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 public interface Etalon {
     static final String PASSPHRASE =
             "assume dynamic woman audit any join category castle economy assume balcony inflict";
+    static final String NEW_PASSPHRASE =
+            "use sugar lesson crazy dirt project company erupt marriage small defy throw";
 
     static final String PUBLIC_KEY_HEX = "f4cd70d17938f5953ea4317d461bd092592b79a086222657fc00abc7d01dd9cc";
 
