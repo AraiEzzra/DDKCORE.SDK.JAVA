@@ -13,11 +13,13 @@ import lombok.extern.java.Log;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 
 import static global.eska.ddk.keygen.utils.Etalon.*;
 import static global.eska.ddk.keygen.utils.HashUtils.sha256;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @Log
 public class KeyPairCreatorTest {
@@ -60,19 +62,19 @@ public class KeyPairCreatorTest {
 
     @Test
     public void getAddressByPublicKeyNotNullTest() {
-        BigInteger address = accountCreator.getAddressByPublicKey(PUBLIC_KEY_BYTES);
+        BigDecimal address = accountCreator.getAddressByPublicKey(PUBLIC_KEY_BYTES);
         assertNotNull(address);
     }
 
     @Test
     public void getAddressByPublicKeyCorrectAddressTest() {
-        BigInteger address = accountCreator.getAddressByPublicKey(PUBLIC_KEY_BYTES);
+        BigDecimal address = accountCreator.getAddressByPublicKey(PUBLIC_KEY_BYTES);
         assertEquals(ADDRESS, address);
     }
 
     @Test
     public void getAddressByPublicKeyNotNegativeAddressTest() {
-        BigInteger address = accountCreator.getAddressByPublicKey(PUBLIC_KEY_BYTES);
+        BigDecimal address = accountCreator.getAddressByPublicKey(PUBLIC_KEY_BYTES);
         assertTrue(address.signum() > 0);
     }
 }

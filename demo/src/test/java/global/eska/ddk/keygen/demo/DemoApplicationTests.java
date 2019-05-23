@@ -11,12 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.util.Arrays;
 
 import static global.eska.ddk.keygen.utils.Etalon.*;
 import static global.eska.ddk.keygen.utils.HashUtils.sha256;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @Slf4j
 @RunWith(SpringRunner.class)
@@ -53,7 +55,7 @@ public class DemoApplicationTests {
         assertArrayEquals(PRIVATE_KEY_BYTES, keyPair.getSecretKey());
         assertEquals("PUBLIC_KEY_HEX", PUBLIC_KEY_HEX, keyPair.getPublicKeyHex());
 
-        BigInteger address = accountCreator.getAddressByPublicKey(keyPair.getPublicKey());
+        BigDecimal address = accountCreator.getAddressByPublicKey(keyPair.getPublicKey());
         assertEquals("ADDRESS", ADDRESS, address);
 
         log.info("{}", PASSPHRASE);
