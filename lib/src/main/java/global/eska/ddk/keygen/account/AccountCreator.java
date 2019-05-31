@@ -6,4 +6,6 @@ public interface AccountCreator {
     BigDecimal getAddressByPublicKey(byte[] publicKey);
 
     BigDecimal getAddressByPublicKey(String publicKey);
+
+
 }

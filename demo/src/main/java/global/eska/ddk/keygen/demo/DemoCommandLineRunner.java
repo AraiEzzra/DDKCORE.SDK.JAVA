@@ -1,5 +1,7 @@
 package global.eska.ddk.keygen.demo;
 
+import global.eska.ddk.api.client.model.Account;
+import global.eska.ddk.api.client.service.DDKService;
 import global.eska.ddk.keygen.account.AccountCreator;
 import global.eska.ddk.keygen.passphrase.PassphraseGenerator;
 import global.eska.ddk.keygen.sodium.KeyPair;
@@ -15,8 +17,13 @@ import java.math.BigDecimal;
 @Component
 public class DemoCommandLineRunner implements CommandLineRunner {
 
+    //    private final CountDownLatch doneSignal;
+//    private final Middleware middleware;
+
     @Value("${greetings-phrase}")
     private String greetingsPhrase;
+
+    private final DDKService ddkService;
 
     private final PassphraseGenerator passphraseGenerator;
 
@@ -24,7 +31,8 @@ public class DemoCommandLineRunner implements CommandLineRunner {
 
     private final AccountCreator accountCreator;
 
-    public DemoCommandLineRunner(PassphraseGenerator passphraseGenerator, KeyPairCreator keyPairCreator, AccountCreator accountCreator) {
+    public DemoCommandLineRunner(DDKService ddkService, PassphraseGenerator passphraseGenerator, KeyPairCreator keyPairCreator, AccountCreator accountCreator) {
+        this.ddkService = ddkService;
         this.passphraseGenerator = passphraseGenerator;
         this.keyPairCreator = keyPairCreator;
         this.accountCreator = accountCreator;
@@ -48,5 +56,20 @@ public class DemoCommandLineRunner implements CommandLineRunner {
         BigDecimal address = accountCreator.getAddressByPublicKey(keyPair.getPublicKey());
 
         log.info("DDK address generated successful: {}", address);
+
+        getAccount();
+//        getAccountBalance();
+    }
+
+    private Account getAccount() {
+        Account account = ddkService.getAccount("4995063339468361088");
+        System.out.println("ACCOUNT: " + account);
+        return account;
+    }
+
+    private Long getAccountBalance() {
+        Long balance = ddkService.getAccountBalance("4995063339468361088");
+        System.out.println("BALANCE: " + balance);
+        return balance;
     }
 }
