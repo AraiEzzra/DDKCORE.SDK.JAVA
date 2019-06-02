@@ -1,12 +1,15 @@
 package global.eska.ddk.keygen.demo;
 
 import global.eska.ddk.api.client.model.Account;
+import global.eska.ddk.api.client.model.AssetSend;
+import global.eska.ddk.api.client.model.Transaction;
 import global.eska.ddk.api.client.service.DDKService;
 import global.eska.ddk.keygen.account.AccountCreator;
 import global.eska.ddk.keygen.passphrase.PassphraseGenerator;
 import global.eska.ddk.keygen.sodium.KeyPair;
 import global.eska.ddk.keygen.sodium.KeyPairCreator;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -31,6 +34,7 @@ public class DemoCommandLineRunner implements CommandLineRunner {
 
     private final AccountCreator accountCreator;
 
+    @Autowired
     public DemoCommandLineRunner(DDKService ddkService, PassphraseGenerator passphraseGenerator, KeyPairCreator keyPairCreator, AccountCreator accountCreator) {
         this.ddkService = ddkService;
         this.passphraseGenerator = passphraseGenerator;
@@ -57,19 +61,25 @@ public class DemoCommandLineRunner implements CommandLineRunner {
 
         log.info("DDK address generated successful: {}", address);
 
-        getAccount();
-//        getAccountBalance();
+        for (int i = 0; i < 50; i++) {
+            getAccount();
+            getAccountBalance();
+            getTransaction();
+            System.out.println("Exequted: " + i + " times!");
+        }
     }
 
-    private Account getAccount() {
+    private void getAccount() {
         Account account = ddkService.getAccount("4995063339468361088");
         System.out.println("ACCOUNT: " + account);
-        return account;
     }
 
-    private Long getAccountBalance() {
+    private void getAccountBalance() {
         Long balance = ddkService.getAccountBalance("4995063339468361088");
         System.out.println("BALANCE: " + balance);
-        return balance;
+    }
+
+    private void getTransaction() {
+        System.out.println("TRANSACTION: " + ddkService.getTransaction("c7d80bf1bb220e62735bd388549a87c0cd93b8be30a1ae2f7291ce20d2a94b79"));
     }
 }

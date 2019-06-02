@@ -6,6 +6,7 @@ import global.eska.ddk.api.client.listeners.MessageListener;
 import global.eska.ddk.api.client.middleware.Middleware;
 import global.eska.ddk.api.client.model.ActionMessageCode;
 import global.eska.ddk.api.client.model.Message;
+import global.eska.ddk.api.client.service.Blocker;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +21,9 @@ public class SocketClient implements DDKSocket {
     private Socket socket;
     private final String url = "http://31.28.161.187:7008";
     private final Middleware middleware;
-
     private final MessageListener messageListener;
-
-    ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    private Blocker blocker;
 
     @Autowired
     public SocketClient(Middleware middleware, MessageListener messageListener) {
@@ -56,6 +56,8 @@ public class SocketClient implements DDKSocket {
     @Override
     public void send(ActionMessageCode code, JsonNode data) {
         middleware.send(socket, code, data);
+        blocker.lock();
+
     }
 
     @Override

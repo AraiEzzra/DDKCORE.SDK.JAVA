@@ -5,6 +5,7 @@ import com.goterl.lazycode.lazysodium.LazySodiumJava;
 import com.goterl.lazycode.lazysodium.SodiumJava;
 import global.eska.ddk.api.client.listeners.MessageListener;
 import global.eska.ddk.api.client.middleware.Middleware;
+import global.eska.ddk.api.client.service.Blocker;
 import global.eska.ddk.api.client.service.DDKService;
 import global.eska.ddk.api.client.socket.SocketClient;
 import global.eska.ddk.keygen.account.AccountCreator;
@@ -68,6 +69,11 @@ public class DemoApplicationConfig {
     @Bean
     public ObjectMapper objectMapper() {
         return new ObjectMapper();
+    }
+
+    @Bean
+    public Blocker blocker() {
+        return new Blocker();
     }
 
     @Bean
