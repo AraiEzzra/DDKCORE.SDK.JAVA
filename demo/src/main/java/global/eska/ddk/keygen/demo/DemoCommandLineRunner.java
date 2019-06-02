@@ -1,8 +1,6 @@
 package global.eska.ddk.keygen.demo;
 
-import global.eska.ddk.api.client.model.Account;
-import global.eska.ddk.api.client.model.AssetSend;
-import global.eska.ddk.api.client.model.Transaction;
+import global.eska.ddk.api.client.model.*;
 import global.eska.ddk.api.client.service.DDKService;
 import global.eska.ddk.keygen.account.AccountCreator;
 import global.eska.ddk.keygen.passphrase.PassphraseGenerator;
@@ -14,7 +12,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Array;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Slf4j
 @Component
@@ -61,12 +61,21 @@ public class DemoCommandLineRunner implements CommandLineRunner {
 
         log.info("DDK address generated successful: {}", address);
 
+        Filter filter = new Filter(null, "cbb9449abb9672d33fa2eb200b1c8b03db7c6572dfb6e59dc334c0ab82b63ab0", null);
+        Sort sort = new Sort("createdAt", SortDirection.ASC);
+
         for (int i = 0; i < 50; i++) {
             getAccount();
             getAccountBalance();
             getTransaction();
-            System.out.println("Exequted: " + i + " times!");
+            getTransactions(filter, 10, 0, sort);
+            System.out.println("Exequted!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!: " + i + " times!");
         }
+    }
+
+    private void getTransactions(Filter filter, int limit, int offset, Sort... sorts) {
+        List<Transaction> transactions = ddkService.getTransactions(filter, limit, offset, sorts);
+        System.out.println("TRANSACTIONS: " + transactions);
     }
 
     private void getAccount() {

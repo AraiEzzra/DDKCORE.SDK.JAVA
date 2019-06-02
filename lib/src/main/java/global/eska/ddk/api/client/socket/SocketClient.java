@@ -9,11 +9,11 @@ import global.eska.ddk.api.client.model.Message;
 import global.eska.ddk.api.client.service.Blocker;
 import io.socket.client.IO;
 import io.socket.client.Socket;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.net.URISyntaxException;
-
 
 @Component
 public class SocketClient implements DDKSocket {

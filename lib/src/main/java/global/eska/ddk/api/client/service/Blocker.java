@@ -13,7 +13,6 @@ public class Blocker {
         if (doneSignal == null || doneSignal.getCount() == 0){
             generate();
         }
-        System.out.println("LOCK!!!!! "+ + doneSignal.getCount());
         try {
             doneSignal.await();
         } catch (InterruptedException e) {
@@ -23,7 +22,6 @@ public class Blocker {
 
     public void unlock() {
         doneSignal.countDown();
-        System.out.println("UNLOCK!!!!! "+ doneSignal.getCount());
     }
 
     public CountDownLatch getDoneSignal() {
