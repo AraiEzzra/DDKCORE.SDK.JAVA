@@ -27,7 +27,6 @@ public class DDKService implements Service {
         this.socketClient = socketClient;
         this.objectMapper = objectMapper;
 
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
     @Override
@@ -121,7 +120,7 @@ public class DDKService implements Service {
         rowDataForMessage.put("trs", transaction);
         rowDataForMessage.put("secret", secret);
 
-        socketClient.send(ActionMessageCode.CREATE_TRANSACTION, getMessageBody(rowDataForMessage));
+        socketClient.send(ActionMessageCode.CREATE_TRANSACTION, getMessageBody( rowDataForMessage));
 
         Message response = socketClient.getResponse();
         Transaction transactionResponse = null;
@@ -135,7 +134,7 @@ public class DDKService implements Service {
     }
 
     private JsonNode getMessageBody(Map<String, Object> messageBody) {
-        objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+
         ObjectNode body = objectMapper.createObjectNode();
         body.set("body", objectMapper.valueToTree(messageBody));
         return body;

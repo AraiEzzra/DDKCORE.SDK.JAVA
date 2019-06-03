@@ -29,13 +29,17 @@ public class DemoCommandLineRunner implements CommandLineRunner {
     private final KeyPairCreator keyPairCreator;
 
     private final AccountCreator accountCreator;
+    private final DdkSdkConfiguration ddkSdkConfiguration;
 
     @Autowired
-    public DemoCommandLineRunner(DDKService ddkService, PassphraseGenerator passphraseGenerator, KeyPairCreator keyPairCreator, AccountCreator accountCreator) {
+    public DemoCommandLineRunner(DDKService ddkService, PassphraseGenerator passphraseGenerator,
+                                 KeyPairCreator keyPairCreator, AccountCreator accountCreator,
+                                 DdkSdkConfiguration ddkSdkConfiguration) {
         this.ddkService = ddkService;
         this.passphraseGenerator = passphraseGenerator;
         this.keyPairCreator = keyPairCreator;
         this.accountCreator = accountCreator;
+        this.ddkSdkConfiguration = ddkSdkConfiguration;
     }
 
     @Override
@@ -57,11 +61,15 @@ public class DemoCommandLineRunner implements CommandLineRunner {
 
         log.info("DDK address generated successful: {}", address);
 
+        System.out.println("ddkSdkConfiguration" + ddkSdkConfiguration.getUrl());
+
             getAccount();
-            getAccountBalance();
-            send();
-            getTransaction();
-            getTransactions();
+//            getAccountBalance();
+//            send();
+//            getTransaction();
+//            getTransactions();
+
+
     }
 
     private void send() {
