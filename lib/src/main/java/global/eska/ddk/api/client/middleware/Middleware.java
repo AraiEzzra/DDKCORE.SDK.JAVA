@@ -3,9 +3,7 @@ package global.eska.ddk.api.client.middleware;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import global.eska.ddk.api.client.model.ActionMessageCode;
-import global.eska.ddk.api.client.model.Headers;
 import global.eska.ddk.api.client.model.Message;
-import global.eska.ddk.api.client.model.MessageType;
 import global.eska.ddk.api.client.service.Blocker;
 import global.eska.ddk.api.client.utils.Utils;
 import io.socket.client.Socket;
@@ -13,8 +11,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -39,7 +35,6 @@ public class Middleware implements DDKMiddleware {
         setRequest(request);
         socket.emit(Socket.EVENT_MESSAGE, utils.convertRequestToJsonObject(request));
     }
-
 
 
     @Override

@@ -6,8 +6,6 @@ import io.socket.client.Socket;
 
 public interface DDKSocket {
 
-    Socket getConnection();
-
     void send(ActionMessageCode code, JsonNode data);
 
     void clear();

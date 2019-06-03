@@ -49,11 +49,6 @@ public class SocketClient implements DDKSocket {
     }
 
     @Override
-    public Socket getConnection() {
-        return null;
-    }
-
-    @Override
     public void send(ActionMessageCode code, JsonNode data) {
         middleware.send(socket, code, data);
         blocker.lock();

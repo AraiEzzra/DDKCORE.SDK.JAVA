@@ -60,7 +60,7 @@ public class DemoApplicationConfig {
 
     @Bean
     public MessageListener messageListener(Middleware middleware) {
-        return new MessageListener(middleware);
+        return new MessageListener(middleware, getObjectMapper());
     }
 
     @Bean

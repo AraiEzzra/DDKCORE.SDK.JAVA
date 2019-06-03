@@ -13,14 +13,14 @@ import java.io.IOException;
 @Component
 public class MessageListener implements Emitter.Listener {
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
     private final Middleware middleware;
 
     @Autowired
-    public MessageListener(Middleware middleware) {
+    public MessageListener(Middleware middleware, ObjectMapper objectMapper) {
         this.middleware = middleware;
+        this.objectMapper = objectMapper;
     }
 
     @Override

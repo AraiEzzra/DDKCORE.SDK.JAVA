@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,16 +20,6 @@ public class Account {
     private Long actualBalance;
     private Delegate delegate;
     private String[] referrals;
-    private Stake[] stakes;
-
-    public Account(BigDecimal address, String publicKey, String secondPublicKey, Long actualBalance, Delegate delegate, String[] referrals, Stake[] stakes) {
-        this.address = address;
-        this.publicKey = publicKey;
-        this.secondPublicKey = secondPublicKey;
-        this.actualBalance = actualBalance;
-        this.delegate = delegate;
-        this.referrals = referrals;
-        this.stakes = stakes;
-    }
+    private List<Stake> stakes;
 
 }
