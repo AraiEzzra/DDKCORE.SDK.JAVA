@@ -1,6 +1,5 @@
 package global.eska.ddk.api.client.middleware;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import global.eska.ddk.api.client.model.ActionMessageCode;
 import global.eska.ddk.api.client.model.Message;
@@ -53,5 +52,9 @@ public class Middleware implements DDKMiddleware {
     public void clear() {
         request = null;
         response = null;
+    }
+
+    public Blocker getBlocker(){
+        return blocker;
     }
 }

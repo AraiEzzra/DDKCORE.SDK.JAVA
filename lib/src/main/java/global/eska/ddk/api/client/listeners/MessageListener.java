@@ -34,6 +34,7 @@ public class MessageListener implements Emitter.Listener {
                 middleware.onMessage(response);
             }
         } catch (IOException e) {
+            middleware.getBlocker().unlock();
             e.printStackTrace();
         }
     }

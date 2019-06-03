@@ -9,8 +9,12 @@ public class Blocker {
 
     private CountDownLatch doneSignal;
 
+    public Blocker() {
+        this.doneSignal = new CountDownLatch(1);
+    }
+
     public void lock() {
-        if (doneSignal == null || doneSignal.getCount() == 0){
+        if (doneSignal.getCount() == 0){
             generate();
         }
         try {

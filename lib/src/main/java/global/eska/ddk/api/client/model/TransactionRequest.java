@@ -9,7 +9,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class TransactionsRequest {
+public class TransactionRequest {
 
     private Filter filter;
     private int limit;
