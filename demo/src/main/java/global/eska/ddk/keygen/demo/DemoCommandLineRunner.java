@@ -12,16 +12,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.util.List;
 
 @Slf4j
 @Component
 public class DemoCommandLineRunner implements CommandLineRunner {
-
-    //    private final CountDownLatch doneSignal;
-//    private final Middleware middleware;
 
     @Value("${greetings-phrase}")
     private String greetingsPhrase;
@@ -61,20 +57,30 @@ public class DemoCommandLineRunner implements CommandLineRunner {
 
         log.info("DDK address generated successful: {}", address);
 
-        Filter filter = new Filter(null, "cbb9449abb9672d33fa2eb200b1c8b03db7c6572dfb6e59dc334c0ab82b63ab0", null);
-        Sort sort = new Sort("createdAt", SortDirection.ASC);
-
-        for (int i = 0; i < 50; i++) {
             getAccount();
             getAccountBalance();
+            send();
             getTransaction();
-            getTransactions(filter, 10, 0, sort);
-            System.out.println("Exequted!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!: " + i + " times!");
-        }
+            getTransactions();
     }
 
-    private void getTransactions(Filter filter, int limit, int offset, Sort... sorts) {
-        List<Transaction> transactions = ddkService.getTransactions(filter, limit, offset, sorts);
+    private void send() {
+        // tenant garage wonder sorry twin clog orange away dash kitten hospital glimpse
+        // fe487d8881111193d8fdb2f4b2ee8de4177f6431496adb643721a29f9af7a4a5
+        // 4334772269939713678
+        String senderAddress = "4334772269939713678";
+        String senderPublicKey = "fe487d8881111193d8fdb2f4b2ee8de4177f6431496adb643721a29f9af7a4a5";
+        Long amount = 50000L;
+        String recipientAddress = "17840830924249740129";
+        String secret = "tenant garage wonder sorry twin clog orange away dash kitten hospital glimpse";
+        Transaction transactionSend = ddkService.send(senderAddress, senderPublicKey, amount, recipientAddress, secret);
+        System.out.println("TRANSACTION: " + transactionSend.getId());
+    }
+
+    private void getTransactions() {
+        Filter filter = new Filter(null, "cbb9449abb9672d33fa2eb200b1c8b03db7c6572dfb6e59dc334c0ab82b63ab0", null);
+        Sort sort = new Sort("createdAt", SortDirection.ASC);
+        List<Transaction> transactions = ddkService.getTransactions(filter, 10, 0, sort);
         System.out.println("TRANSACTIONS: " + transactions);
     }
 
@@ -89,6 +95,6 @@ public class DemoCommandLineRunner implements CommandLineRunner {
     }
 
     private void getTransaction() {
-        System.out.println("TRANSACTION: " + ddkService.getTransaction("c7d80bf1bb220e62735bd388549a87c0cd93b8be30a1ae2f7291ce20d2a94b79"));
+        System.out.println("TRANSACTION: " + ddkService.getTransaction("b3d2a39ae38a36560803da647275855003010a9e80d233edcf13db7c3e17ee8e"));
     }
 }

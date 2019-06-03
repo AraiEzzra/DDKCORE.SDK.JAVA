@@ -78,10 +78,9 @@ public class DemoApplicationConfig {
 
     @Bean
     public DDKService ddkService(
-            PassphraseGenerator passphraseGenerator,
             SocketClient socketClient,
             ObjectMapper objectMapper) {
-        return new DDKService(passphraseGenerator, socketClient, objectMapper);
+        return new DDKService(socketClient, objectMapper);
     }
 
 }
