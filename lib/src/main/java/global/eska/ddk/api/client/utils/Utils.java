@@ -3,6 +3,7 @@ package global.eska.ddk.api.client.utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import global.eska.ddk.api.client.model.ActionMessageCode;
 import global.eska.ddk.api.client.model.Headers;
 import global.eska.ddk.api.client.model.Message;
@@ -12,6 +13,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
 import java.util.UUID;
 
 @Component
@@ -40,6 +42,12 @@ public class Utils {
         Headers headers = new Headers(uuid, MessageType.REQUEST);
         Message request = new Message(headers, code, data.get("body"));
         return request;
+    }
+
+    public JsonNode getMessageBody(Map<String, Object> messageBody) {
+        ObjectNode body = objectMapper.createObjectNode();
+        body.set("body", objectMapper.valueToTree(messageBody));
+        return body;
     }
 
 

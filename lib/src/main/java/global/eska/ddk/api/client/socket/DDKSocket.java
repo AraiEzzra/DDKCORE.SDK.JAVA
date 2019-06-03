@@ -1,12 +1,12 @@
 package global.eska.ddk.api.client.socket;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import global.eska.ddk.api.client.model.ActionMessageCode;
-import io.socket.client.Socket;
+
+import java.util.Map;
 
 public interface DDKSocket {
 
-    void send(ActionMessageCode code, JsonNode data);
+    void send(ActionMessageCode code, Map<String, Object> data);
 
     void clear();
 

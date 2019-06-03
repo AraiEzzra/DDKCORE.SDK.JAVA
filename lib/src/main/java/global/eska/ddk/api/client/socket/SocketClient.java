@@ -1,7 +1,5 @@
 package global.eska.ddk.api.client.socket;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import global.eska.ddk.api.client.listeners.MessageListener;
 import global.eska.ddk.api.client.middleware.Middleware;
 import global.eska.ddk.api.client.model.ActionMessageCode;
@@ -9,11 +7,11 @@ import global.eska.ddk.api.client.model.Message;
 import global.eska.ddk.api.client.service.Blocker;
 import io.socket.client.IO;
 import io.socket.client.Socket;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.net.URISyntaxException;
+import java.util.Map;
 
 @Component
 public class SocketClient implements DDKSocket {
@@ -44,12 +42,12 @@ public class SocketClient implements DDKSocket {
         }
     }
 
-    public Message getResponse(){
+    public Message getResponse() {
         return middleware.getResponse();
     }
 
     @Override
-    public void send(ActionMessageCode code, JsonNode data) {
+    public void send(ActionMessageCode code, Map<String, Object> data) {
         middleware.send(socket, code, data);
         blocker.lock();
 

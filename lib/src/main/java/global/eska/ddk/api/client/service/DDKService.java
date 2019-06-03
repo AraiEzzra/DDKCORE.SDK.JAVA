@@ -1,10 +1,7 @@
 package global.eska.ddk.api.client.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import global.eska.ddk.api.client.model.*;
 import global.eska.ddk.api.client.socket.SocketClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +23,13 @@ public class DDKService implements Service {
                       ObjectMapper objectMapper) {
         this.socketClient = socketClient;
         this.objectMapper = objectMapper;
-
     }
 
     @Override
     public Account getAccount(String address) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("address", address);
-        socketClient.send(ActionMessageCode.GET_ACCOUNT, getMessageBody(map));
+        Map<String, Object> rowDataForMessage = new HashMap<>();
+        rowDataForMessage.put("address", address);
+        socketClient.send(ActionMessageCode.GET_ACCOUNT, rowDataForMessage);
         Account account = null;
         Message response = socketClient.getResponse();
         try {
@@ -49,7 +45,7 @@ public class DDKService implements Service {
     public Long getAccountBalance(String address) {
         Map<String, Object> rowDataForMessage = new HashMap<>();
         rowDataForMessage.put("address", address);
-        socketClient.send(ActionMessageCode.GET_ACCOUNT_BALANCE, getMessageBody(rowDataForMessage));
+        socketClient.send(ActionMessageCode.GET_ACCOUNT_BALANCE, rowDataForMessage);
         Long balance = null;
         Message response = socketClient.getResponse();
         try {
@@ -65,7 +61,7 @@ public class DDKService implements Service {
     public Transaction getTransaction(String id) {
         Map<String, Object> rowDataForMessage = new HashMap<>();
         rowDataForMessage.put("id", id);
-        socketClient.send(ActionMessageCode.GET_TRANSACTION, getMessageBody(rowDataForMessage));
+        socketClient.send(ActionMessageCode.GET_TRANSACTION, rowDataForMessage);
         Transaction trs = null;
         Message response = socketClient.getResponse();
         try {
@@ -92,12 +88,13 @@ public class DDKService implements Service {
         }
 
         rowDataForMessage.put("sort", arrSorts);
-        socketClient.send(ActionMessageCode.GET_TRANSACTIONS, getMessageBody(rowDataForMessage));
+        socketClient.send(ActionMessageCode.GET_TRANSACTIONS, rowDataForMessage);
         List<Transaction> transactions = null;
         Message response = socketClient.getResponse();
         try {
             transactions = objectMapper.readValue(response.getBody().get("data").get("transactions").toString(),
-                    new TypeReference<List<Transaction>>() {});
+                    new TypeReference<List<Transaction>>() {
+                    });
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -107,7 +104,7 @@ public class DDKService implements Service {
 
     @Override
     public Transaction send(String senderAddress, String senderPublicKey, Long amount,
-                       String recipientAddress, String secret) {
+                            String recipientAddress, String secret) {
         Transaction<AssetSend> transaction = new Transaction<>();
         transaction.setType(TransactionType.SEND);
         transaction.setSenderAddress(senderAddress);
@@ -120,7 +117,7 @@ public class DDKService implements Service {
         rowDataForMessage.put("trs", transaction);
         rowDataForMessage.put("secret", secret);
 
-        socketClient.send(ActionMessageCode.CREATE_TRANSACTION, getMessageBody( rowDataForMessage));
+        socketClient.send(ActionMessageCode.CREATE_TRANSACTION, rowDataForMessage);
 
         Message response = socketClient.getResponse();
         Transaction transactionResponse = null;
@@ -131,13 +128,6 @@ public class DDKService implements Service {
         }
 
         return transactionResponse;
-    }
-
-    private JsonNode getMessageBody(Map<String, Object> messageBody) {
-
-        ObjectNode body = objectMapper.createObjectNode();
-        body.set("body", objectMapper.valueToTree(messageBody));
-        return body;
     }
 
 }

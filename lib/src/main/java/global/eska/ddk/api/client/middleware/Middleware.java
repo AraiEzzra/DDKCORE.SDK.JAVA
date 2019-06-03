@@ -12,6 +12,8 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Getter
 @Setter
 @Service
@@ -30,8 +32,8 @@ public class Middleware implements DDKMiddleware {
         this.utils = utils;
     }
 
-    public void send(Socket socket, ActionMessageCode code, JsonNode data) {
-        Message request = utils.createRequest(code, data);
+    public void send(Socket socket, ActionMessageCode code, Map<String, Object> data) {
+        Message request = utils.createRequest(code, utils.getMessageBody(data));
         setRequest(request);
         socket.emit(Socket.EVENT_MESSAGE, utils.convertRequestToJsonObject(request));
     }
