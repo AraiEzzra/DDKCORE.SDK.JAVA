@@ -9,6 +9,7 @@ import global.eska.ddk.api.client.middleware.Middleware;
 import global.eska.ddk.api.client.service.Blocker;
 import global.eska.ddk.api.client.service.DDKService;
 import global.eska.ddk.api.client.socket.SocketClient;
+import global.eska.ddk.api.client.utils.Utils;
 import global.eska.ddk.keygen.account.AccountCreator;
 import global.eska.ddk.keygen.account.DDKAccountCreator;
 import global.eska.ddk.keygen.passphrase.DDKPathPhraseGenerator;
@@ -54,7 +55,7 @@ public class DemoApplicationConfig {
 
     @Bean
     public Middleware middleware() {
-        return new Middleware();
+        return new Middleware(getObjectMapper(), blocker(), getUtils());
     }
 
     @Bean
@@ -85,6 +86,11 @@ public class DemoApplicationConfig {
             SocketClient socketClient,
             ObjectMapper objectMapper) {
         return new DDKService(socketClient, objectMapper);
+    }
+
+    @Bean
+    public Utils getUtils() {
+        return new Utils(getObjectMapper());
     }
 
 }

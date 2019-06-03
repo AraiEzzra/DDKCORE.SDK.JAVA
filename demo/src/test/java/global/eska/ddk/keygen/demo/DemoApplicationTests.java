@@ -12,6 +12,7 @@ import global.eska.ddk.keygen.sodium.KeyPairCreator;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -27,11 +28,12 @@ import static org.junit.Assert.*;
 @SpringBootTest
 public class DemoApplicationTests {
 
-    private PassphraseGenerator passphraseGenerator = new DDKPathPhraseGenerator();
-
-    private KeyPairCreator keyPairCreator = new DDKKeyPairCreator(new LazySodiumJava(new SodiumJava()));
-
-    private AccountCreator accountCreator = new DDKAccountCreator();
+    @Autowired
+    private PassphraseGenerator passphraseGenerator;
+    @Autowired
+    private KeyPairCreator keyPairCreator;
+    @Autowired
+    private AccountCreator accountCreator;
 
     @Test
     public void createPassphraseTest() {
