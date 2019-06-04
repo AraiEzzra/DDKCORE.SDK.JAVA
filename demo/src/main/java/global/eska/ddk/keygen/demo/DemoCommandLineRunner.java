@@ -64,10 +64,10 @@ public class DemoCommandLineRunner implements CommandLineRunner {
         System.out.println("ddkSdkConfiguration" + ddkSdkConfiguration.getUrl());
 
             getAccount();
-//            getAccountBalance();
-//            send();
-//            getTransaction();
-//            getTransactions();
+            getAccountBalance();
+            send();
+            getTransaction();
+            getTransactions();
 
 
     }
@@ -81,7 +81,17 @@ public class DemoCommandLineRunner implements CommandLineRunner {
         Long amount = 50000L;
         String recipientAddress = "17840830924249740129";
         String secret = "tenant garage wonder sorry twin clog orange away dash kitten hospital glimpse";
-        Transaction transactionSend = ddkService.send(senderAddress, senderPublicKey, amount, recipientAddress, secret);
+
+        Transaction<AssetSend> transaction = new Transaction<>();
+        transaction.setType(TransactionType.SEND);
+        transaction.setSenderAddress(senderAddress);
+        transaction.setSenderPublicKey(senderPublicKey);
+        AssetSend assetSend = new AssetSend();
+        assetSend.setAmount(amount);
+        assetSend.setRecipientAddress(recipientAddress);
+        transaction.setAsset(assetSend);
+
+        Transaction transactionSend = ddkService.send(transaction, secret);
         System.out.println("TRANSACTION: " + transactionSend.getId());
     }
 

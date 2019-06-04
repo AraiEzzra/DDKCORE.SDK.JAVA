@@ -1,18 +1,18 @@
 package global.eska.ddk.api.client.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import global.eska.ddk.api.client.model.ActionMessageCode;
-import global.eska.ddk.api.client.model.Headers;
-import global.eska.ddk.api.client.model.Message;
-import global.eska.ddk.api.client.model.MessageType;
+import global.eska.ddk.api.client.model.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -37,10 +37,10 @@ public class Utils {
         return jsonRequest;
     }
 
-    public Message createRequest(ActionMessageCode code, JsonNode data) {
+    public Message createRequest(ActionMessageCode code, Map<String, Object> data) {
         String uuid = UUID.randomUUID().toString();
         Headers headers = new Headers(uuid, MessageType.REQUEST);
-        Message request = new Message(headers, code, data.get("body"));
+        Message request = new Message(headers, code, data);
         return request;
     }
 
@@ -50,5 +50,13 @@ public class Utils {
         return body;
     }
 
-
+    public <T> T convertResponseToCorrectObject(Message response, Class<T> type){
+        T obj = null;
+        try {
+            obj = objectMapper.treeToValue(objectMapper.valueToTree(response.getBody()).get("data"), type);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return obj;
+    }
 }

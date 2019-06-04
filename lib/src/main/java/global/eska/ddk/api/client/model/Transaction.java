@@ -26,4 +26,5 @@ public class Transaction<T> {
     private Integer relay;
     private Integer confirmations;
     private T asset;
+
 }

@@ -32,7 +32,7 @@ public class Middleware implements DDKMiddleware {
     }
 
     public void send(Socket socket, ActionMessageCode code, Map<String, Object> data) {
-        Message request = utils.createRequest(code, utils.getMessageBody(data));
+        Message request = utils.createRequest(code, data);
         setRequest(request);
         socket.emit(Socket.EVENT_MESSAGE, utils.convertRequestToJsonObject(request));
     }

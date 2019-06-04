@@ -1,5 +1,6 @@
 package global.eska.ddk.keygen.demo;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.goterl.lazycode.lazysodium.LazySodiumJava;
@@ -73,6 +74,7 @@ public class DemoApplicationConfig {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
         return objectMapper;
     }
 
@@ -85,7 +87,7 @@ public class DemoApplicationConfig {
     public DDKService ddkService(
             SocketClient socketClient,
             ObjectMapper objectMapper) {
-        return new DDKService(socketClient, objectMapper);
+        return new DDKService(socketClient, objectMapper, getUtils());
     }
 
     @Bean

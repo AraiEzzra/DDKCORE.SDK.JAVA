@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import global.eska.ddk.api.client.model.*;
 import global.eska.ddk.api.client.socket.SocketClient;
+import global.eska.ddk.api.client.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,12 +18,14 @@ public class DDKService implements Service {
 
     private final SocketClient socketClient;
     private final ObjectMapper objectMapper;
+    private final Utils utils;
 
     @Autowired
     public DDKService(SocketClient socketClient,
-                      ObjectMapper objectMapper) {
+                      ObjectMapper objectMapper, Utils utils) {
         this.socketClient = socketClient;
         this.objectMapper = objectMapper;
+        this.utils = utils;
     }
 
     @Override
@@ -30,13 +33,9 @@ public class DDKService implements Service {
         Map<String, Object> rowDataForMessage = new HashMap<>();
         rowDataForMessage.put("address", address);
         socketClient.send(ActionMessageCode.GET_ACCOUNT, rowDataForMessage);
-        Account account = null;
         Message response = socketClient.getResponse();
-        try {
-            account = objectMapper.readValue(response.getBody().get("data").toString(), Account.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Account account = utils.convertResponseToCorrectObject(response, Account.class);
+        System.out.println("getAccount account: " + account);
         socketClient.clear();
         return account;
     }
@@ -46,13 +45,8 @@ public class DDKService implements Service {
         Map<String, Object> rowDataForMessage = new HashMap<>();
         rowDataForMessage.put("address", address);
         socketClient.send(ActionMessageCode.GET_ACCOUNT_BALANCE, rowDataForMessage);
-        Long balance = null;
         Message response = socketClient.getResponse();
-        try {
-            balance = objectMapper.readValue(response.getBody().get("data").toString(), Long.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Long balance = utils.convertResponseToCorrectObject(response, Long.class);
         socketClient.clear();
         return balance;
     }
@@ -62,15 +56,8 @@ public class DDKService implements Service {
         Map<String, Object> rowDataForMessage = new HashMap<>();
         rowDataForMessage.put("id", id);
         socketClient.send(ActionMessageCode.GET_TRANSACTION, rowDataForMessage);
-        Transaction trs = null;
         Message response = socketClient.getResponse();
-        try {
-            trs = objectMapper.readValue(response.getBody().get("data").toString(),
-                    new TypeReference<Transaction<AssetSend>>() {
-                    });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Transaction trs = utils.convertResponseToCorrectObject(response, Transaction.class);
         socketClient.clear();
         return trs;
     }
@@ -89,10 +76,11 @@ public class DDKService implements Service {
 
         rowDataForMessage.put("sort", arrSorts);
         socketClient.send(ActionMessageCode.GET_TRANSACTIONS, rowDataForMessage);
-        List<Transaction> transactions = null;
         Message response = socketClient.getResponse();
+        List<Transaction> transactions = null;
+        Map<String, Object> trsMap = (Map<String,Object>)response.getBody().get("data");
         try {
-            transactions = objectMapper.readValue(response.getBody().get("data").get("transactions").toString(),
+            transactions = objectMapper.readValue(String.valueOf(objectMapper.valueToTree(trsMap.get("transactions"))),
                     new TypeReference<List<Transaction>>() {
                     });
         } catch (IOException e) {
@@ -103,31 +91,13 @@ public class DDKService implements Service {
     }
 
     @Override
-    public Transaction send(String senderAddress, String senderPublicKey, Long amount,
-                            String recipientAddress, String secret) {
-        Transaction<AssetSend> transaction = new Transaction<>();
-        transaction.setType(TransactionType.SEND);
-        transaction.setSenderAddress(senderAddress);
-        transaction.setSenderPublicKey(senderPublicKey);
-        transaction.setAsset(new AssetSend());
-        transaction.getAsset().setAmount(amount);
-        transaction.getAsset().setRecipientAddress(recipientAddress);
-
+    public Transaction send(Transaction transaction, String secret) {
         Map<String, Object> rowDataForMessage = new HashMap<>();
         rowDataForMessage.put("trs", transaction);
         rowDataForMessage.put("secret", secret);
-
         socketClient.send(ActionMessageCode.CREATE_TRANSACTION, rowDataForMessage);
-
         Message response = socketClient.getResponse();
-        Transaction transactionResponse = null;
-        try {
-            transactionResponse = objectMapper.readValue(response.getBody().get("data").toString(), Transaction.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return transactionResponse;
+        return utils.convertResponseToCorrectObject(response, Transaction.class);
     }
 
 }
