@@ -65,7 +65,7 @@ public class DDKClientConfiguration {
     }
 
     @Bean
-    public MessageListener messageListener(Middleware middleware, Gson gson) {
+    public MessageListener messageListener(Middleware middleware, @Qualifier("ddkGson") Gson gson) {
         return new MessageListener(middleware, gson);
     }
 

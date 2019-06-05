@@ -1,6 +1,7 @@
 package global.eska.ddk.api.client.socket;
 
 import global.eska.ddk.DDKSocketClientConfiguration;
+import global.eska.ddk.api.client.exceptions.DDKApplicationException;
 import global.eska.ddk.api.client.listeners.MessageListener;
 import global.eska.ddk.api.client.middleware.Middleware;
 import global.eska.ddk.api.client.model.ActionMessageCode;
@@ -47,10 +48,13 @@ public class SocketClient implements DDKSocket {
         blocker.lock();
     }
 
-    public ResponseEntity request(ActionMessageCode code, Map<String, Object> data) {
+    public ResponseEntity request(ActionMessageCode code, Map<String, Object> data) throws DDKApplicationException {
         middleware.send(socket, code, data);
         blocker.lock();
         MessageResponse response = middleware.getResponse();
+        if (response == null){
+            throw new DDKApplicationException("Timeout exceeded!");
+        }
         middleware.clear();
         return response.getBody();
     }

@@ -27,9 +27,17 @@ public class DemoCommandLineRunner implements CommandLineRunner {
 
     private final AccountCreator accountCreator;
 
+
+    private String TRANSACTION_ID = "e66d98c54c24b904bdcfdda9edc0a8b39ab21cf34101a7b37d6f1074d4ca25c7";
+    private final String BLOCK_ID = "cbb9449abb9672d33fa2eb200b1c8b03db7c6572dfb6e59dc334c0ab82b63ab0";
+    private final String RECIPIENT_ADDRESS = "17840830924249740129";
+    private final String SENDER_PUBLIC_KEY = "fe487d8881111193d8fdb2f4b2ee8de4177f6431496adb643721a29f9af7a4a5";
+    private final String SENDER_ADDRESS = "4334772269939713678";
+    private final String SECRET = "tenant garage wonder sorry twin clog orange away dash kitten hospital glimpse";
+    private String newTransactionId;
+
     @Autowired
-    public DemoCommandLineRunner(DDKClient ddkClient, PassphraseGenerator passphraseGenerator,
-                                 KeyPairCreator keyPairCreator, AccountCreator accountCreator) {
+    public DemoCommandLineRunner(DDKClient ddkClient, PassphraseGenerator passphraseGenerator, KeyPairCreator keyPairCreator, AccountCreator accountCreator) {
         this.ddkClient = ddkClient;
         this.passphraseGenerator = passphraseGenerator;
         this.keyPairCreator = keyPairCreator;
@@ -38,53 +46,60 @@ public class DemoCommandLineRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-
-        String passphrase = passphraseGenerator.createPassphrase();
-        log.info("Random passphrase generated successful: {}", passphrase);
-
-        KeyPair keyPair = keyPairCreator.createKeyPair(passphrase);
-
-        log.info("KeyPair generated successful:");
-        log.info("public key: {}", keyPair.getPublicKey());
-        log.info("public key hex: {}", keyPair.getPublicKeyHex());
-        log.info("secret key: {}", keyPair.getSecretKey());
-        log.info("secret key hex: {}", keyPair.getSecretKeyHex());
-
-        BigDecimal address = accountCreator.getAddressByPublicKey(keyPair.getPublicKey());
-
-        log.info("DDK address generated successful: {}", address);
-
-//        getAccount();
-//        getAccountBalance();
-//        send();
-//        getTransaction();
+        // run methods for example
+        createKeyPair();
+        generatePassphrase();
+        createAccount();
+        getAccount();
+        getAccountBalance();
+        send();
+        getTransaction();
         getTransactions();
 
 
     }
 
+    private void createKeyPair(){
+        KeyPair keyPair = keyPairCreator.createKeyPair(SECRET);
+        System.out.println("KeyPair generated successful:");
+        System.out.println("public key: " + keyPair.getPublicKey());
+        System.out.println("public key hex: " + keyPair.getPublicKeyHex());
+        System.out.println("secret key: " + keyPair.getSecretKey());
+        System.out.println("secret key hex: " + keyPair.getSecretKeyHex());
+    }
+
+    private void generatePassphrase(){
+        String passphrase = passphraseGenerator.createPassphrase();
+        System.out.println("Random passphrase generated successful: " + passphrase);
+    }
+
+    private void createAccount(){
+        BigDecimal address = accountCreator.getAddressByPublicKey(SENDER_PUBLIC_KEY);
+        System.out.println("DDK address generated successful: " + address);
+    }
+
     private void send() {
-        String secret = "tenant garage wonder sorry twin clog orange away dash kitten hospital glimpse";
         Transaction<AssetSend> transaction = new Transaction<>();
         transaction.setType(TransactionType.SEND);
-        transaction.setSenderAddress("4334772269939713678");
-        transaction.setSenderPublicKey("fe487d8881111193d8fdb2f4b2ee8de4177f6431496adb643721a29f9af7a4a5");
+        transaction.setSenderAddress(SENDER_ADDRESS);
+        transaction.setSenderPublicKey(SENDER_PUBLIC_KEY);
         AssetSend assetSend = new AssetSend();
         assetSend.setAmount(50000L);
-        assetSend.setRecipientAddress("17840830924249740129");
+        assetSend.setRecipientAddress(RECIPIENT_ADDRESS);
         transaction.setAsset(assetSend);
 
         Transaction transactionSend = null;
         try {
-            transactionSend = ddkClient.createTransaction(transaction, secret);
+            transactionSend = ddkClient.createTransaction(transaction, SECRET);
         } catch (DDKApplicationException e) {
             e.printStackTrace();
         }
+        newTransactionId = transactionSend.getId();
         System.out.println("NEW TRANSACTION ID: " + transactionSend.getId());
     }
 
     private void getTransactions() {
-        Filter filter = new Filter(null, "cbb9449abb9672d33fa2eb200b1c8b03db7c6572dfb6e59dc334c0ab82b63ab0", null);
+        Filter filter = new Filter(null, BLOCK_ID, null);
         Sort sort = new Sort("createdAt", SortDirection.ASC);
         List<Transaction> transactions = null;
         try {
@@ -98,7 +113,7 @@ public class DemoCommandLineRunner implements CommandLineRunner {
     private void getAccount() {
         Account account = null;
         try {
-            account = ddkClient.getAccount("4334772269939713678");
+            account = ddkClient.getAccount(SENDER_ADDRESS);
         } catch (DDKApplicationException e) {
             e.printStackTrace();
         }
@@ -108,7 +123,7 @@ public class DemoCommandLineRunner implements CommandLineRunner {
     private void getAccountBalance() {
         Long balance = null;
         try {
-            balance = ddkClient.getAccountBalance("4334772269939713678");
+            balance = ddkClient.getAccountBalance(SENDER_ADDRESS);
         } catch (DDKApplicationException e) {
             e.printStackTrace();
         }
@@ -117,7 +132,7 @@ public class DemoCommandLineRunner implements CommandLineRunner {
 
     private void getTransaction() {
         try {
-            System.out.println("TRANSACTION: " + ddkClient.getTransaction("e66d98c54c24b904bdcfdda9edc0a8b39ab21cf34101a7b37d6f1074d4ca25c7"));
+            System.out.println("TRANSACTION: " + ddkClient.getTransaction(TRANSACTION_ID));
         } catch (DDKApplicationException e) {
             e.printStackTrace();
         }

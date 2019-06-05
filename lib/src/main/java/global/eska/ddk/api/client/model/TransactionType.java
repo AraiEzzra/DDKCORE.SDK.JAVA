@@ -21,7 +21,6 @@ public enum TransactionType {
 
     public static TransactionType fromKey(int key) {
         for (TransactionType type : TransactionType.values()) {
-
             if (type.getKey() == key) {
                 return type;
             }
