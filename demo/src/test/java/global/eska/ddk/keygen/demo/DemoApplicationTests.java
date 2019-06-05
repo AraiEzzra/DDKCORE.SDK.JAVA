@@ -1,7 +1,12 @@
 package global.eska.ddk.keygen.demo;
 
+import com.goterl.lazycode.lazysodium.LazySodiumJava;
+import com.goterl.lazycode.lazysodium.SodiumJava;
 import global.eska.ddk.keygen.account.AccountCreator;
+import global.eska.ddk.keygen.account.DDKAccountCreator;
+import global.eska.ddk.keygen.passphrase.DDKPathPhraseGenerator;
 import global.eska.ddk.keygen.passphrase.PassphraseGenerator;
+import global.eska.ddk.keygen.sodium.DDKKeyPairCreator;
 import global.eska.ddk.keygen.sodium.KeyPair;
 import global.eska.ddk.keygen.sodium.KeyPairCreator;
 import lombok.extern.slf4j.Slf4j;
@@ -16,9 +21,7 @@ import java.util.Arrays;
 
 import static global.eska.ddk.keygen.utils.Etalon.*;
 import static global.eska.ddk.keygen.utils.HashUtils.sha256;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 @Slf4j
 @RunWith(SpringRunner.class)
@@ -27,10 +30,8 @@ public class DemoApplicationTests {
 
     @Autowired
     private PassphraseGenerator passphraseGenerator;
-
     @Autowired
     private KeyPairCreator keyPairCreator;
-
     @Autowired
     private AccountCreator accountCreator;
 

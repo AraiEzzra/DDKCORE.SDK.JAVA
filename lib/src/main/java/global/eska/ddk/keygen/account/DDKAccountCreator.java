@@ -1,5 +1,7 @@
 package global.eska.ddk.keygen.account;
 
+import org.springframework.stereotype.Component;
+
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 

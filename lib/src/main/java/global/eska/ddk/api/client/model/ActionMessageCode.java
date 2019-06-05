@@ -1,0 +1,19 @@
+package global.eska.ddk.api.client.model;
+
+// DDKCore API_ACTION_TYPES
+public enum ActionMessageCode {
+
+    GET_ACCOUNT,
+    GET_ACCOUNT_BALANCE,
+    CREATE_TRANSACTION,
+    GET_TRANSACTION,
+    GET_TRANSACTIONS,
+    APPLY_BLOCK,
+    UPDATE_BLOCKCHAIN_INFO,
+    UNDO_BLOCK,
+    DECLINE_TRANSACTION,
+    TRANSACTION_CONFLICTED,
+    UPDATE_SYSTEM_INFO;
+
+
+}
