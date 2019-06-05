@@ -1,12 +1,17 @@
 package global.eska.ddk.api.client.middleware;
 
-import global.eska.ddk.api.client.model.Message;
+import global.eska.ddk.api.client.model.ActionMessageCode;
+import global.eska.ddk.api.client.model.socket.MessageResponse;
+import io.socket.client.Socket;
+
+import java.util.Map;
 
 public interface DDKMiddleware {
 
-    //    void send(Object body, ActionMessageCode code);
-    void onMessage(Message data);
+    void send(Socket socket, ActionMessageCode code, Map<String, Object> data);
 
-    Message getResponse();
+    void onMessage(MessageResponse data);
+
+    MessageResponse getResponse();
 }
 

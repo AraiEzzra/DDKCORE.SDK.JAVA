@@ -1,8 +1,5 @@
 package global.eska.ddk.api.client.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 public enum TransactionType {
     REGISTER(0),
     SEND(10),
@@ -12,24 +9,23 @@ public enum TransactionType {
     VOTE(60);
 
 
-    private final int typeNumber;
+    private final int key;
 
-    TransactionType(int typeNumber) {
-        this.typeNumber = typeNumber;
+    TransactionType(int key) {
+        this.key = key;
     }
 
-    @JsonCreator
-    public static TransactionType getNameByValue(final int value) {
-        for (final TransactionType s : TransactionType.values()) {
-            if (s.typeNumber == value) {
-                return s;
+    public int getKey() {
+        return this.key;
+    }
+
+    public static TransactionType fromKey(int key) {
+        for (TransactionType type : TransactionType.values()) {
+
+            if (type.getKey() == key) {
+                return type;
             }
         }
         return null;
-    }
-
-    @JsonValue
-    public int getTypeNumber() {
-        return typeNumber;
     }
 }

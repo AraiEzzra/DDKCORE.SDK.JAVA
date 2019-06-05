@@ -1,8 +1,8 @@
 package global.eska.ddk.api.client.middleware;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import global.eska.ddk.api.client.model.ActionMessageCode;
-import global.eska.ddk.api.client.model.Message;
+import global.eska.ddk.api.client.model.socket.MessageRequest;
+import global.eska.ddk.api.client.model.socket.MessageResponse;
 import global.eska.ddk.api.client.service.Blocker;
 import global.eska.ddk.api.client.utils.Utils;
 import io.socket.client.Socket;
@@ -18,34 +18,32 @@ import java.util.Map;
 @Service
 public class Middleware implements DDKMiddleware {
 
-    private final ObjectMapper objectMapper;
     private final Blocker blocker;
     private final Utils utils;
-    private Message request;
-    private Message response;
+    private MessageRequest request;
+    private MessageResponse response;
 
     @Autowired
-    public Middleware(ObjectMapper objectMapper, Blocker blocker, Utils utils) {
-        this.objectMapper = objectMapper;
+    public Middleware(Blocker blocker, Utils utils) {
         this.blocker = blocker;
         this.utils = utils;
     }
 
+    @Override
     public void send(Socket socket, ActionMessageCode code, Map<String, Object> data) {
-        Message request = utils.createRequest(code, data);
+        MessageRequest request = utils.createRequest(code, data);
         setRequest(request);
         socket.emit(Socket.EVENT_MESSAGE, utils.convertRequestToJsonObject(request));
     }
 
-
     @Override
-    public void onMessage(Message response) {
+    public void onMessage(MessageResponse response) {
         this.response = response;
         blocker.unlock();
     }
 
     @Override
-    public Message getResponse() {
+    public MessageResponse getResponse() {
         return response;
     }
 
@@ -54,7 +52,8 @@ public class Middleware implements DDKMiddleware {
         response = null;
     }
 
-    public Blocker getBlocker(){
+
+    public Blocker getBlocker() {
         return blocker;
     }
 }

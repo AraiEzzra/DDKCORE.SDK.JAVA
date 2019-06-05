@@ -1,5 +1,6 @@
 package global.eska.ddk.keygen.demo;
 
+import global.eska.ddk.api.client.exceptions.ApplicationException;
 import global.eska.ddk.api.client.model.*;
 import global.eska.ddk.api.client.service.DDKService;
 import global.eska.ddk.keygen.account.AccountCreator;
@@ -10,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -17,6 +19,7 @@ import java.util.List;
 
 @Slf4j
 @Component
+@ComponentScan({"global.eska.ddk"})
 public class DemoCommandLineRunner implements CommandLineRunner {
 
     @Value("${greetings-phrase}")
@@ -91,28 +94,52 @@ public class DemoCommandLineRunner implements CommandLineRunner {
         assetSend.setRecipientAddress(recipientAddress);
         transaction.setAsset(assetSend);
 
-        Transaction transactionSend = ddkService.send(transaction, secret);
+        Transaction transactionSend = null;
+        try {
+            transactionSend = ddkService.send(transaction, secret);
+        } catch (ApplicationException e) {
+            e.printStackTrace();
+        }
         System.out.println("TRANSACTION: " + transactionSend.getId());
     }
 
     private void getTransactions() {
         Filter filter = new Filter(null, "cbb9449abb9672d33fa2eb200b1c8b03db7c6572dfb6e59dc334c0ab82b63ab0", null);
         Sort sort = new Sort("createdAt", SortDirection.ASC);
-        List<Transaction> transactions = ddkService.getTransactions(filter, 10, 0, sort);
+        List<Transaction> transactions = null;
+        try {
+            transactions = ddkService.getTransactions(filter, 10, 0, sort);
+        } catch (ApplicationException e) {
+            e.printStackTrace();
+        }
         System.out.println("TRANSACTIONS: " + transactions);
     }
 
     private void getAccount() {
-        Account account = ddkService.getAccount("4995063339468361088");
+        Account account = null;
+        try {
+            account = ddkService.getAccount("4995063339468361088");
+        } catch (ApplicationException e) {
+            e.printStackTrace();
+        }
         System.out.println("ACCOUNT: " + account);
     }
 
     private void getAccountBalance() {
-        Long balance = ddkService.getAccountBalance("4995063339468361088");
+        Long balance = null;
+        try {
+            balance = ddkService.getAccountBalance("4995063339468361088");
+        } catch (ApplicationException e) {
+            e.printStackTrace();
+        }
         System.out.println("BALANCE: " + balance);
     }
 
     private void getTransaction() {
-        System.out.println("TRANSACTION: " + ddkService.getTransaction("b3d2a39ae38a36560803da647275855003010a9e80d233edcf13db7c3e17ee8e"));
+        try {
+            System.out.println("TRANSACTION: " + ddkService.getTransaction("e66d98c54c24b904bdcfdda9edc0a8b39ab21cf34101a7b37d6f1074d4ca25c7"));
+        } catch (ApplicationException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -3,6 +3,7 @@ package global.eska.ddk.keygen.demo;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import com.goterl.lazycode.lazysodium.LazySodiumJava;
 import com.goterl.lazycode.lazysodium.SodiumJava;
 import global.eska.ddk.api.client.listeners.MessageListener;
@@ -19,6 +20,7 @@ import global.eska.ddk.keygen.sodium.DDKKeyPairCreator;
 import global.eska.ddk.keygen.sodium.KeyPairCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 import java.util.concurrent.CountDownLatch;
 
@@ -33,21 +35,21 @@ public class DemoApplicationConfig {
     public LazySodiumJava getLazySodiumJava(SodiumJava sodiumJava) {
         return new LazySodiumJava(sodiumJava);
     }
-
-    @Bean
-    public PassphraseGenerator getPassphraseGenerator() {
-        return new DDKPathPhraseGenerator();
-    }
+//
+//    @Bean
+//    public PassphraseGenerator getPassphraseGenerator() {
+//        return new DDKPathPhraseGenerator();
+//    }
 
     @Bean
     public KeyPairCreator getKeyPairCreator(LazySodiumJava lazySodium) {
         return new DDKKeyPairCreator(lazySodium);
     }
-
-    @Bean
-    public AccountCreator getAccountCreator() {
-        return new DDKAccountCreator();
-    }
+//
+//    @Bean
+//    public AccountCreator getAccountCreator() {
+//        return new DDKAccountCreator();
+//    }
 
     @Bean
     public CountDownLatch getCountDownLatch() {
@@ -55,19 +57,24 @@ public class DemoApplicationConfig {
     }
 
     @Bean
-    public Middleware middleware() {
-        return new Middleware(getObjectMapper(), blocker(), getUtils());
+    public Gson getGson() {
+        return new Gson();
     }
 
-    @Bean
-    public MessageListener messageListener(Middleware middleware) {
-        return new MessageListener(middleware, getObjectMapper());
-    }
+//    @Bean
+//    public Middleware middleware() {
+//        return new Middleware(getObjectMapper(), blocker(), getUtils());
+//    }
 
-    @Bean
-    public SocketClient socketClient(Middleware middleware, MessageListener messageListener) {
-        return new SocketClient(middleware, messageListener);
-    }
+//    @Bean
+//    public MessageListener messageListener(Middleware middleware) {
+//        return new MessageListener(middleware, getObjectMapper());
+//    }
+//
+//    @Bean
+//    public SocketClient socketClient(Middleware middleware, MessageListener messageListener) {
+//        return new SocketClient(middleware, messageListener);
+//    }
 
     @Bean
     public ObjectMapper getObjectMapper() {
@@ -75,24 +82,26 @@ public class DemoApplicationConfig {
         objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+        objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT, true);
+        objectMapper.enableDefaultTyping();
         return objectMapper;
     }
 
-    @Bean
-    public Blocker blocker() {
-        return new Blocker();
-    }
+//    @Bean
+//    public Blocker blocker() {
+//        return new Blocker();
+//    }
 
-    @Bean
-    public DDKService ddkService(
-            SocketClient socketClient,
-            ObjectMapper objectMapper) {
-        return new DDKService(socketClient, objectMapper, getUtils());
-    }
-
-    @Bean
-    public Utils getUtils() {
-        return new Utils(getObjectMapper());
-    }
+//    @Bean
+//    public DDKService ddkService(
+//            SocketClient socketClient,
+//            ObjectMapper objectMapper) {
+//        return new DDKService(socketClient, objectMapper, getUtils());
+//    }
+//
+//    @Bean
+//    public Utils getUtils() {
+//        return new Utils(getObjectMapper());
+//    }
 
 }
