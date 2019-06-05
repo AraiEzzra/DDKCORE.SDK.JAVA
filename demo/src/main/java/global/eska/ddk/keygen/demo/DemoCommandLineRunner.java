@@ -131,10 +131,12 @@ public class DemoCommandLineRunner implements CommandLineRunner {
     }
 
     private void getTransaction() {
+        Transaction transaction = null;
         try {
-            System.out.println("TRANSACTION: " + ddkClient.getTransaction(TRANSACTION_ID));
+            transaction = ddkClient.getTransaction(TRANSACTION_ID);
         } catch (DDKApplicationException e) {
             e.printStackTrace();
         }
+        System.out.println("TRANSACTION: " + transaction);
     }
 }
