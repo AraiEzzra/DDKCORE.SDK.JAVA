@@ -2,7 +2,7 @@ package global.eska.ddk.api.client.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import global.eska.ddk.api.client.exceptions.ApplicationException;
+import global.eska.ddk.api.client.exceptions.DDKApplicationException;
 import global.eska.ddk.api.client.model.ActionMessageCode;
 import global.eska.ddk.api.client.model.Headers;
 import global.eska.ddk.api.client.model.MessageType;
@@ -39,9 +39,9 @@ public class Utils {
         return new MessageRequest(headers, code, data);
     }
 
-    public <T> T convertMapToObject(ResponseEntity response, Class<T> clazz) throws ApplicationException {
+    public <T> T convertMapToObject(ResponseEntity response, Class<T> clazz) throws DDKApplicationException {
         if (response.getErrors().size() != 0) {
-            throw new ApplicationException("Errors: " + response.getErrors());
+            throw new DDKApplicationException("Errors: " + response.getErrors());
         }
         String json = gson.toJson(response.getData());
         T t = gson.fromJson(json, clazz);
@@ -49,9 +49,9 @@ public class Utils {
     }
 
 
-    public <T> T convertMapTrsListToObj(ResponseEntity response, TypeToken<T> typeToken) throws ApplicationException {
+    public <T> T convertMapTrsListToObj(ResponseEntity response, TypeToken<T> typeToken) throws DDKApplicationException {
         if (response.getErrors().size() != 0) {
-            throw new ApplicationException("Errors: " + response.getErrors());
+            throw new DDKApplicationException("Errors: " + response.getErrors());
         }
         Map<String, Object> mapData = (Map<String, Object>) response.getData();
         String json = gson.toJson(mapData.get("transactions"));

@@ -1,6 +1,6 @@
 package global.eska.ddk.keygen.demo;
 
-import global.eska.ddk.api.client.exceptions.ApplicationException;
+import global.eska.ddk.api.client.exceptions.DDKApplicationException;
 import global.eska.ddk.api.client.model.*;
 import global.eska.ddk.api.client.service.DDKClient;
 import global.eska.ddk.keygen.account.AccountCreator;
@@ -77,7 +77,7 @@ public class DemoCommandLineRunner implements CommandLineRunner {
         Transaction transactionSend = null;
         try {
             transactionSend = ddkClient.createTransaction(transaction, secret);
-        } catch (ApplicationException e) {
+        } catch (DDKApplicationException e) {
             e.printStackTrace();
         }
         System.out.println("NEW TRANSACTION ID: " + transactionSend.getId());
@@ -89,7 +89,7 @@ public class DemoCommandLineRunner implements CommandLineRunner {
         List<Transaction> transactions = null;
         try {
             transactions = ddkClient.getTransactions(filter, 10, 0, sort);
-        } catch (ApplicationException e) {
+        } catch (DDKApplicationException e) {
             e.printStackTrace();
         }
         System.out.println("TRANSACTIONS: " + transactions);
@@ -99,7 +99,7 @@ public class DemoCommandLineRunner implements CommandLineRunner {
         Account account = null;
         try {
             account = ddkClient.getAccount("4334772269939713678");
-        } catch (ApplicationException e) {
+        } catch (DDKApplicationException e) {
             e.printStackTrace();
         }
         System.out.println("ACCOUNT: " + account);
@@ -109,7 +109,7 @@ public class DemoCommandLineRunner implements CommandLineRunner {
         Long balance = null;
         try {
             balance = ddkClient.getAccountBalance("4334772269939713678");
-        } catch (ApplicationException e) {
+        } catch (DDKApplicationException e) {
             e.printStackTrace();
         }
         System.out.println("BALANCE: " + balance);
@@ -118,7 +118,7 @@ public class DemoCommandLineRunner implements CommandLineRunner {
     private void getTransaction() {
         try {
             System.out.println("TRANSACTION: " + ddkClient.getTransaction("e66d98c54c24b904bdcfdda9edc0a8b39ab21cf34101a7b37d6f1074d4ca25c7"));
-        } catch (ApplicationException e) {
+        } catch (DDKApplicationException e) {
             e.printStackTrace();
         }
     }

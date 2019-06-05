@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import global.eska.ddk.DDKSocketClientConfiguration;
-import global.eska.ddk.api.client.exceptions.ApplicationException;
+import global.eska.ddk.api.client.exceptions.DDKApplicationException;
 import global.eska.ddk.api.client.listeners.MessageListener;
 import global.eska.ddk.api.client.middleware.Middleware;
 import global.eska.ddk.api.client.model.*;
@@ -39,7 +39,7 @@ public class DDKClient implements Client {
     }
 
     @Override
-    public Account getAccount(String address) throws ApplicationException {
+    public Account getAccount(String address) throws DDKApplicationException {
         Map<String, Object> rowDataForMessage = new HashMap<>();
         rowDataForMessage.put("address", address);
         ResponseEntity responseData = socketClient.request(ActionMessageCode.GET_ACCOUNT, rowDataForMessage);
@@ -47,7 +47,7 @@ public class DDKClient implements Client {
     }
 
     @Override
-    public Long getAccountBalance(String address) throws ApplicationException {
+    public Long getAccountBalance(String address) throws DDKApplicationException {
         Map<String, Object> rowDataForMessage = new HashMap<>();
         rowDataForMessage.put("address", address);
         ResponseEntity responseData = socketClient.request(ActionMessageCode.GET_ACCOUNT_BALANCE, rowDataForMessage);
@@ -55,7 +55,7 @@ public class DDKClient implements Client {
     }
 
     @Override
-    public Transaction getTransaction(String id) throws ApplicationException {
+    public Transaction getTransaction(String id) throws DDKApplicationException {
         Map<String, Object> rowDataForMessage = new HashMap<>();
         rowDataForMessage.put("id", id);
         ResponseEntity responseData = socketClient.request(ActionMessageCode.GET_TRANSACTION, rowDataForMessage);
@@ -63,7 +63,7 @@ public class DDKClient implements Client {
     }
 
     @Override
-    public List<Transaction> getTransactions(Filter filter, int limit, int offset, Sort... sorts) throws ApplicationException {
+    public List<Transaction> getTransactions(Filter filter, int limit, int offset, Sort... sorts) throws DDKApplicationException {
         Map<String, Object> rowDataForMessage = new HashMap<>();
         rowDataForMessage.put("filter", filter);
         rowDataForMessage.put("limit", limit);
@@ -74,9 +74,9 @@ public class DDKClient implements Client {
     }
 
     @Override
-    public Transaction createTransaction(Transaction transaction, String secret) throws ApplicationException {
+    public Transaction createTransaction(Transaction transaction, String secret) throws DDKApplicationException {
         if (transaction.getType() != TransactionType.SEND) {
-            throw new ApplicationException("Transaction type: " + transaction.getType() + " not supported!");
+            throw new DDKApplicationException("Transaction type: " + transaction.getType() + " not supported!");
         }
         Map<String, Object> rowDataForMessage = new HashMap<>();
         rowDataForMessage.put("trs", transaction);
