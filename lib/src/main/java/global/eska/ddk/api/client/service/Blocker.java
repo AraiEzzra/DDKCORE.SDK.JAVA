@@ -1,10 +1,7 @@
 package global.eska.ddk.api.client.service;
 
-import org.springframework.stereotype.Component;
-
 import java.util.concurrent.CountDownLatch;
 
-@Component
 public class Blocker {
 
     private CountDownLatch doneSignal;
@@ -14,7 +11,7 @@ public class Blocker {
     }
 
     public void lock() {
-        if (doneSignal.getCount() == 0){
+        if (doneSignal.getCount() == 0) {
             generate();
         }
         try {

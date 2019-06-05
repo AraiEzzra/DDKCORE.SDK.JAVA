@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 import java.security.SecureRandom;
 
-@Component
 public class DDKPathPhraseGenerator implements PassphraseGenerator {
 
     @Override

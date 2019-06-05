@@ -6,21 +6,17 @@ import global.eska.ddk.api.client.model.*;
 import global.eska.ddk.api.client.model.socket.ResponseEntity;
 import global.eska.ddk.api.client.socket.SocketClient;
 import global.eska.ddk.api.client.utils.Utils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Component
-public class DDKService implements Service {
+public class DDKClient implements Client {
 
     private final SocketClient socketClient;
     private final Utils utils;
 
-    @Autowired
-    public DDKService(SocketClient socketClient, Utils utils) {
+    public DDKClient(SocketClient socketClient, Utils utils) {
         this.socketClient = socketClient;
         this.utils = utils;
     }
@@ -31,7 +27,7 @@ public class DDKService implements Service {
         rowDataForMessage.put("address", address);
         socketClient.send(ActionMessageCode.GET_ACCOUNT, rowDataForMessage);
         ResponseEntity responseData = socketClient.getResponseData();
-        Account account = utils.convertMapToObj(responseData, Account.class);
+        Account account = utils.convertMapToObject(responseData, Account.class);
         socketClient.clear();
         return account;
     }
@@ -42,7 +38,7 @@ public class DDKService implements Service {
         rowDataForMessage.put("address", address);
         socketClient.send(ActionMessageCode.GET_ACCOUNT_BALANCE, rowDataForMessage);
         ResponseEntity responseData = socketClient.getResponseData();
-        Long balance = utils.convertMapToObj(responseData, Long.class);
+        Long balance = utils.convertMapToObject(responseData, Long.class);
         socketClient.clear();
         return balance;
     }
@@ -53,7 +49,7 @@ public class DDKService implements Service {
         rowDataForMessage.put("id", id);
         socketClient.send(ActionMessageCode.GET_TRANSACTION, rowDataForMessage);
         ResponseEntity response = socketClient.getResponseData();
-        Transaction trs = utils.convertMapToObj(response, Transaction.class);
+        Transaction trs = utils.convertMapToObject(response, Transaction.class);
         socketClient.clear();
         return trs;
     }
@@ -69,25 +65,26 @@ public class DDKService implements Service {
         for (int i = 0; i < sorts.length; i++) {
             arrSorts[i] = new String[]{sorts[0].getFieldName(), sorts[0].getSortDirection().toString()};
         }
-
         rowDataForMessage.put("sort", arrSorts);
         socketClient.send(ActionMessageCode.GET_TRANSACTIONS, rowDataForMessage);
         ResponseEntity response = socketClient.getResponseData();
         List<Transaction> transactions = utils.convertMapTrsListToObj(response, new TypeToken<List<Transaction>>() {
         });
-
         socketClient.clear();
         return transactions;
     }
 
     @Override
-    public Transaction send(Transaction transaction, String secret) throws ApplicationException {
+    public Transaction createTransaction(Transaction transaction, String secret) throws ApplicationException {
+        if (transaction.getType() != TransactionType.SEND) {
+            throw new ApplicationException("Transaction type: " + transaction.getType() + " not supported!");
+        }
         Map<String, Object> rowDataForMessage = new HashMap<>();
         rowDataForMessage.put("trs", transaction);
         rowDataForMessage.put("secret", secret);
         socketClient.send(ActionMessageCode.CREATE_TRANSACTION, rowDataForMessage);
         ResponseEntity response = socketClient.getResponseData();
-        return utils.convertMapToObj(response, Transaction.class);
+        return utils.convertMapToObject(response, Transaction.class);
     }
 
 }

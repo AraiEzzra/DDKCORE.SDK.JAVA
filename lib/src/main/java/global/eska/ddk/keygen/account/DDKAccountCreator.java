@@ -8,7 +8,6 @@ import java.nio.charset.StandardCharsets;
 import static global.eska.ddk.keygen.utils.ByteUtils.bytesToBigDecimal;
 import static global.eska.ddk.keygen.utils.HashUtils.sha256;
 
-@Component
 public class DDKAccountCreator implements AccountCreator {
 
     // TODO change for one method with string publicKey parameter

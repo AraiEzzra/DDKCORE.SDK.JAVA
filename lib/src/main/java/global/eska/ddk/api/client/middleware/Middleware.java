@@ -8,14 +8,11 @@ import global.eska.ddk.api.client.utils.Utils;
 import io.socket.client.Socket;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
 @Getter
 @Setter
-@Service
 public class Middleware implements DDKMiddleware {
 
     private final Blocker blocker;
@@ -23,7 +20,6 @@ public class Middleware implements DDKMiddleware {
     private MessageRequest request;
     private MessageResponse response;
 
-    @Autowired
     public Middleware(Blocker blocker, Utils utils) {
         this.blocker = blocker;
         this.utils = utils;
