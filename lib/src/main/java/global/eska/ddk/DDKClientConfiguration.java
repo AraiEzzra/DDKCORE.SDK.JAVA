@@ -20,6 +20,7 @@ import global.eska.ddk.keygen.passphrase.DDKPathPhraseGenerator;
 import global.eska.ddk.keygen.passphrase.PassphraseGenerator;
 import global.eska.ddk.keygen.sodium.DDKKeyPairCreator;
 import global.eska.ddk.keygen.sodium.KeyPairCreator;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -27,7 +28,7 @@ import java.util.concurrent.CountDownLatch;
 
 
 @Configuration
-public class DDKBeanConfiguration {
+public class DDKClientConfiguration {
     @Bean
     public SodiumJava lazySodium() {
         return new SodiumJava();
@@ -69,17 +70,17 @@ public class DDKBeanConfiguration {
     }
 
     @Bean
-    public DDKConfiguration ddkConfiguration() {
-        return new DDKConfiguration();
+    public DDKSocketClientConfiguration ddkSocketClientConfiguration() {
+        return new DDKSocketClientConfiguration();
     }
 
     @Bean
     public SocketClient socketClient(Middleware middleware, MessageListener messageListener,
-                                     Blocker blocker, DDKConfiguration ddkConfiguration) {
-        return new SocketClient(middleware, messageListener, blocker, ddkConfiguration);
+                                     Blocker blocker, DDKSocketClientConfiguration ddkSocketClientConfiguration) {
+        return new SocketClient(middleware, messageListener, blocker, ddkSocketClientConfiguration);
     }
 
-    @Bean
+    @Bean(name = "ddkGson")
     public Gson gson() {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(MessageType.class, new MessageTypeSerializer());
@@ -94,7 +95,7 @@ public class DDKBeanConfiguration {
     }
 
     @Bean
-    public Utils getUtils(Gson gson) {
+    public Utils getUtils(@Qualifier("ddkGson") Gson gson) {
         return new Utils(gson);
     }
 

@@ -1,6 +1,6 @@
 package global.eska.ddk.api.client.socket;
 
-import global.eska.ddk.DDKConfiguration;
+import global.eska.ddk.DDKSocketClientConfiguration;
 import global.eska.ddk.api.client.listeners.MessageListener;
 import global.eska.ddk.api.client.middleware.Middleware;
 import global.eska.ddk.api.client.model.ActionMessageCode;
@@ -19,20 +19,20 @@ public class SocketClient implements DDKSocket {
     private final Middleware middleware;
     private final MessageListener messageListener;
     private final Blocker blocker;
-    private final DDKConfiguration ddkConfiguration;
+    private final DDKSocketClientConfiguration ddkSocketClientConfiguration;
 
-    public SocketClient(Middleware middleware, MessageListener messageListener, Blocker blocker, DDKConfiguration ddkConfiguration) {
+    public SocketClient(Middleware middleware, MessageListener messageListener, Blocker blocker, DDKSocketClientConfiguration ddkSocketClientConfiguration) {
         this.middleware = middleware;
         this.messageListener = messageListener;
         this.blocker = blocker;
-        this.ddkConfiguration = ddkConfiguration;
+        this.ddkSocketClientConfiguration = ddkSocketClientConfiguration;
         connect();
     }
 
     private void connect() {
         try {
             System.out.println("Socket init");
-            socket = IO.socket(ddkConfiguration.getUrl());
+            socket = IO.socket(ddkSocketClientConfiguration.getUrl());
             socket.on(Socket.EVENT_MESSAGE, messageListener);
             socket.connect();
             System.out.println("Socket connected");
@@ -41,15 +41,18 @@ public class SocketClient implements DDKSocket {
         }
     }
 
-    public ResponseEntity getResponseData() {
-        MessageResponse response = middleware.getResponse();
-        return response.getBody();
-    }
-
     @Override
     public void send(ActionMessageCode code, Map<String, Object> data) {
         middleware.send(socket, code, data);
         blocker.lock();
+    }
+
+    public ResponseEntity request(ActionMessageCode code, Map<String, Object> data) {
+        middleware.send(socket, code, data);
+        blocker.lock();
+        MessageResponse response = middleware.getResponse();
+        middleware.clear();
+        return response.getBody();
     }
 
     @Override

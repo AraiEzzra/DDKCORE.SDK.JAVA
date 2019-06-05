@@ -54,10 +54,10 @@ public class DemoCommandLineRunner implements CommandLineRunner {
 
         log.info("DDK address generated successful: {}", address);
 
-        getAccount();
-        getAccountBalance();
-        send();
-        getTransaction();
+//        getAccount();
+//        getAccountBalance();
+//        send();
+//        getTransaction();
         getTransactions();
 
 
@@ -80,7 +80,7 @@ public class DemoCommandLineRunner implements CommandLineRunner {
         } catch (ApplicationException e) {
             e.printStackTrace();
         }
-        log.info("NEW TRANSACTION ID: " + transactionSend.getId());
+        System.out.println("NEW TRANSACTION ID: " + transactionSend.getId());
     }
 
     private void getTransactions() {

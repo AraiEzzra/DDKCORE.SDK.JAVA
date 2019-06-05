@@ -1,10 +1,18 @@
 package global.eska.ddk.api.client.service;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import global.eska.ddk.DDKSocketClientConfiguration;
 import global.eska.ddk.api.client.exceptions.ApplicationException;
+import global.eska.ddk.api.client.listeners.MessageListener;
+import global.eska.ddk.api.client.middleware.Middleware;
 import global.eska.ddk.api.client.model.*;
 import global.eska.ddk.api.client.model.socket.ResponseEntity;
 import global.eska.ddk.api.client.socket.SocketClient;
+import global.eska.ddk.api.client.utils.MessageTypeSerializer;
+import global.eska.ddk.api.client.utils.SortUtils;
+import global.eska.ddk.api.client.utils.TransactionTypeSerializer;
 import global.eska.ddk.api.client.utils.Utils;
 
 import java.util.HashMap;
@@ -21,37 +29,37 @@ public class DDKClient implements Client {
         this.utils = utils;
     }
 
+    public DDKClient(String protocol, String host, int port) {
+        Gson gson = createGson();
+        utils = new Utils(gson);
+        Blocker blocker = new Blocker();
+        Middleware middleware = new Middleware(blocker, utils);
+        MessageListener messageListener = new MessageListener(middleware, gson);
+        socketClient = new SocketClient(middleware, messageListener, blocker, new DDKSocketClientConfiguration(protocol, host, port));
+    }
+
     @Override
     public Account getAccount(String address) throws ApplicationException {
         Map<String, Object> rowDataForMessage = new HashMap<>();
         rowDataForMessage.put("address", address);
-        socketClient.send(ActionMessageCode.GET_ACCOUNT, rowDataForMessage);
-        ResponseEntity responseData = socketClient.getResponseData();
-        Account account = utils.convertMapToObject(responseData, Account.class);
-        socketClient.clear();
-        return account;
+        ResponseEntity responseData = socketClient.request(ActionMessageCode.GET_ACCOUNT, rowDataForMessage);
+        return utils.convertMapToObject(responseData, Account.class);
     }
 
     @Override
     public Long getAccountBalance(String address) throws ApplicationException {
         Map<String, Object> rowDataForMessage = new HashMap<>();
         rowDataForMessage.put("address", address);
-        socketClient.send(ActionMessageCode.GET_ACCOUNT_BALANCE, rowDataForMessage);
-        ResponseEntity responseData = socketClient.getResponseData();
-        Long balance = utils.convertMapToObject(responseData, Long.class);
-        socketClient.clear();
-        return balance;
+        ResponseEntity responseData = socketClient.request(ActionMessageCode.GET_ACCOUNT_BALANCE, rowDataForMessage);
+        return utils.convertMapToObject(responseData, Long.class);
     }
 
     @Override
     public Transaction getTransaction(String id) throws ApplicationException {
         Map<String, Object> rowDataForMessage = new HashMap<>();
         rowDataForMessage.put("id", id);
-        socketClient.send(ActionMessageCode.GET_TRANSACTION, rowDataForMessage);
-        ResponseEntity response = socketClient.getResponseData();
-        Transaction trs = utils.convertMapToObject(response, Transaction.class);
-        socketClient.clear();
-        return trs;
+        ResponseEntity responseData = socketClient.request(ActionMessageCode.GET_TRANSACTION, rowDataForMessage);
+        return utils.convertMapToObject(responseData, Transaction.class);
     }
 
     @Override
@@ -60,18 +68,9 @@ public class DDKClient implements Client {
         rowDataForMessage.put("filter", filter);
         rowDataForMessage.put("limit", limit);
         rowDataForMessage.put("offset", offset);
-
-        String[][] arrSorts = new String[sorts.length][];
-        for (int i = 0; i < sorts.length; i++) {
-            arrSorts[i] = new String[]{sorts[0].getFieldName(), sorts[0].getSortDirection().toString()};
-        }
-        rowDataForMessage.put("sort", arrSorts);
-        socketClient.send(ActionMessageCode.GET_TRANSACTIONS, rowDataForMessage);
-        ResponseEntity response = socketClient.getResponseData();
-        List<Transaction> transactions = utils.convertMapTrsListToObj(response, new TypeToken<List<Transaction>>() {
-        });
-        socketClient.clear();
-        return transactions;
+        rowDataForMessage.put("sort", new SortUtils().getSort(sorts));
+        ResponseEntity responseData = socketClient.request(ActionMessageCode.GET_TRANSACTIONS, rowDataForMessage);
+        return utils.convertMapTrsListToObj(responseData, new TypeToken<List<Transaction>>() {});
     }
 
     @Override
@@ -82,9 +81,16 @@ public class DDKClient implements Client {
         Map<String, Object> rowDataForMessage = new HashMap<>();
         rowDataForMessage.put("trs", transaction);
         rowDataForMessage.put("secret", secret);
-        socketClient.send(ActionMessageCode.CREATE_TRANSACTION, rowDataForMessage);
-        ResponseEntity response = socketClient.getResponseData();
-        return utils.convertMapToObject(response, Transaction.class);
+        ResponseEntity responseData = socketClient.request(ActionMessageCode.CREATE_TRANSACTION, rowDataForMessage);
+        return utils.convertMapToObject(responseData, Transaction.class);
+    }
+
+    private Gson createGson() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(MessageType.class, new MessageTypeSerializer());
+        gsonBuilder.registerTypeAdapter(TransactionType.class, new TransactionTypeSerializer());
+        Gson gson = gsonBuilder.create();
+        return gson;
     }
 
 }

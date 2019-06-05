@@ -1,6 +1,7 @@
 package global.eska.ddk.api.client.service;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 public class Blocker {
 
@@ -15,7 +16,7 @@ public class Blocker {
             generate();
         }
         try {
-            doneSignal.await();
+            doneSignal.await(10L, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

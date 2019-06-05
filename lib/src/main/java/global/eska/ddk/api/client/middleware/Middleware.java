@@ -48,8 +48,4 @@ public class Middleware implements DDKMiddleware {
         response = null;
     }
 
-
-    public Blocker getBlocker() {
-        return blocker;
-    }
 }
