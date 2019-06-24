@@ -58,7 +58,7 @@ public class DemoCommandLineRunner implements CommandLineRunner {
 //        getTransactions();
 //        getTransactionsByHeight();
 //        getLastBlock();
-        getBlockByHeight();
+//        getBlockByHeight();
 
 
     }

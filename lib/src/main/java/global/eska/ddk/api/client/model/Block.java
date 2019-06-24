@@ -22,6 +22,8 @@ public class Block {
     private String payloadHash;
     private String generatorPublicKey;
     private String signature;
+    private Integer relay;
+    private List<Transaction> transactions;
 
     public String getId() {
         return id;
@@ -126,8 +128,5 @@ public class Block {
     public void setTransactions(List<Transaction> transactions) {
         this.transactions = transactions;
     }
-
-    private Integer relay;
-    private List<Transaction> transactions;
 
 }

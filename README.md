@@ -88,6 +88,9 @@ After installation you can use library in maven projects by adding dependency:
     // Get last block
     Block block = ddkClient.getLastBlock();
     
+    // Get block by height
+    Block block = ddkClient.getBlockByHeight(HEIGHT);;
+    
     // Send transaction(for that moment you can create only TransactionType.SEND and AssetSend)
     // first of all you should create Asset :
     AssetSend assetSend = new AssetSend();
