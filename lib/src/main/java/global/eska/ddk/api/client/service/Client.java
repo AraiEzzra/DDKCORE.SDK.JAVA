@@ -13,4 +13,6 @@ public interface Client {
     List<Transaction> getTransactions(Filter filter, int limit, int offset, Sort... sort) throws DDKApplicationException;
     List<Transaction> getTransactionsByHeight(Long height, int limit, int offset) throws DDKApplicationException;
     Transaction createTransaction(Transaction transaction, String secret) throws DDKApplicationException;
+    Block getLastBlock() throws DDKApplicationException;
+    Block getBlockByHeight();
 }

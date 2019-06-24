@@ -95,6 +95,17 @@ public class DDKClient implements Client {
         return utils.convertMapToObject(responseData, Transaction.class);
     }
 
+    @Override
+    public Block getLastBlock() throws DDKApplicationException {
+        ResponseEntity responseData = socketClient.request(ActionMessageCode.GET_LAST_BLOCK, new HashMap<>());
+        return utils.convertMapToObject(responseData, Block.class);
+    }
+
+    @Override
+    public Block getBlockByHeight() {
+        return null;
+    }
+
     private Gson createGson() {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(MessageType.class, new MessageTypeSerializer());
