@@ -34,6 +34,7 @@ public class DemoCommandLineRunner implements CommandLineRunner {
     private final String SENDER_PUBLIC_KEY = "fe487d8881111193d8fdb2f4b2ee8de4177f6431496adb643721a29f9af7a4a5";
     private final String SENDER_ADDRESS = "4334772269939713678";
     private final String SECRET = "tenant garage wonder sorry twin clog orange away dash kitten hospital glimpse";
+    private final Long HEIGHT = 1L;
     private String newTransactionId;
 
     @Autowired
@@ -47,14 +48,15 @@ public class DemoCommandLineRunner implements CommandLineRunner {
     @Override
     public void run(String... args) {
         // run methods for example
-        createKeyPair();
-        generatePassphrase();
-        createAccount();
-        getAccount();
-        getAccountBalance();
-        send();
-        getTransaction();
-        getTransactions();
+//        createKeyPair();
+//        generatePassphrase();
+//        createAccount();
+//        getAccount();
+//        getAccountBalance();
+//        send();
+//        getTransaction();
+//        getTransactions();
+//        getTransactionsByHeight();
 
 
     }
@@ -104,6 +106,16 @@ public class DemoCommandLineRunner implements CommandLineRunner {
         List<Transaction> transactions = null;
         try {
             transactions = ddkClient.getTransactions(filter, 10, 0, sort);
+        } catch (DDKApplicationException e) {
+            e.printStackTrace();
+        }
+        System.out.println("TRANSACTIONS: " + transactions);
+    }
+
+    private void getTransactionsByHeight() {
+        List<Transaction> transactions = null;
+        try {
+            transactions = ddkClient.getTransactionsByHeight(HEIGHT, 10, 0);
         } catch (DDKApplicationException e) {
             e.printStackTrace();
         }

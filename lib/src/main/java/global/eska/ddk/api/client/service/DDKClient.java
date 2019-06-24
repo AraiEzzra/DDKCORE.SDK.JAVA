@@ -74,6 +74,16 @@ public class DDKClient implements Client {
     }
 
     @Override
+    public List<Transaction> getTransactionsByHeight(Long height, int limit, int offset) throws DDKApplicationException {
+        Map<String, Object> rowDataForMessage = new HashMap<>();
+        rowDataForMessage.put("height", height);
+        rowDataForMessage.put("limit", limit);
+        rowDataForMessage.put("offset", offset);
+        ResponseEntity responseData = socketClient.request(ActionMessageCode.GET_TRANSACTIONS_BY_HEIGHT, rowDataForMessage);
+        return utils.convertMapTrsListToObj(responseData, new TypeToken<List<Transaction>>() {});
+    }
+
+    @Override
     public Transaction createTransaction(Transaction transaction, String secret) throws DDKApplicationException {
         if (transaction.getType() != TransactionType.SEND) {
             throw new DDKApplicationException("Transaction type: " + transaction.getType() + " not supported!");
