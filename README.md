@@ -80,10 +80,13 @@ After installation you can use library in maven projects by adding dependency:
     // Sort
     Sort sort = new Sort("createdAt", SortDirection.ASC);
     // transfer filter and sort and limit with offset for pagination to getTransactions method
-    List<Transaction> transactions = transactions = ddkClient.getTransactions(filter, 10, 0, sort);
+    List<Transaction> transactions = ddkClient.getTransactions(filter, 10, 0, sort);
     
     // Get transactions by height(transfer height, limit and offset)
-    List<Transaction> transactions = transactions = ddkClient.getTransactionsByHeight(1, 10, 0);
+    List<Transaction> transactions = ddkClient.getTransactionsByHeight(1, 10, 0);
+    
+    // Get last block
+    Block block = ddkClient.getLastBlock();
     
     // Send transaction(for that moment you can create only TransactionType.SEND and AssetSend)
     // first of all you should create Asset :
