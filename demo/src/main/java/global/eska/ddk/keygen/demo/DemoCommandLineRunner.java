@@ -58,6 +58,7 @@ public class DemoCommandLineRunner implements CommandLineRunner {
 //        getTransactions();
 //        getTransactionsByHeight();
 //        getLastBlock();
+        getBlockByHeight();
 
 
     }
@@ -157,6 +158,16 @@ public class DemoCommandLineRunner implements CommandLineRunner {
         Block block = null;
         try {
             block = ddkClient.getLastBlock();
+        } catch (DDKApplicationException e) {
+            e.printStackTrace();
+        }
+        System.out.println("BLOCK: " + block);
+    }
+
+    private void getBlockByHeight() {
+        Block block = null;
+        try {
+            block = ddkClient.getBlockByHeight(HEIGHT);
         } catch (DDKApplicationException e) {
             e.printStackTrace();
         }

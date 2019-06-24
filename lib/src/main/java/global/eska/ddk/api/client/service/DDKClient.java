@@ -102,8 +102,11 @@ public class DDKClient implements Client {
     }
 
     @Override
-    public Block getBlockByHeight() {
-        return null;
+    public Block getBlockByHeight(Long height) throws DDKApplicationException {
+        Map<String, Object> rowDataForMessage = new HashMap<>();
+        rowDataForMessage.put("height", height);
+        ResponseEntity responseData = socketClient.request(ActionMessageCode.GET_BLOCK_BY_HEIGHT, rowDataForMessage);
+        return utils.convertMapToObject(responseData, Block.class);
     }
 
     private Gson createGson() {
