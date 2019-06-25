@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DDKClient implements Client {
+public class DDKClient implements IDDKClient {
 
     private final SocketClient socketClient;
     private final Utils utils;

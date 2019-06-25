@@ -18,7 +18,10 @@ Requires:
 Installation:
 ```bash
 git clone https://github.com/AraiEzzra/DDKCORE.SDK.JAVA.git
+// lib with demo
 cd DDKCORE.SDK.JAVA
+// only lib
+cd DDKCORE.SDK.JAVA/lib
 mvn clean install
 ```
 

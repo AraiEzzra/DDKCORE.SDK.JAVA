@@ -1,12 +1,7 @@
 package global.eska.ddk.keygen.demo;
 
-import com.goterl.lazycode.lazysodium.LazySodiumJava;
-import com.goterl.lazycode.lazysodium.SodiumJava;
 import global.eska.ddk.keygen.account.AccountCreator;
-import global.eska.ddk.keygen.account.DDKAccountCreator;
-import global.eska.ddk.keygen.passphrase.DDKPathPhraseGenerator;
 import global.eska.ddk.keygen.passphrase.PassphraseGenerator;
-import global.eska.ddk.keygen.sodium.DDKKeyPairCreator;
 import global.eska.ddk.keygen.sodium.KeyPair;
 import global.eska.ddk.keygen.sodium.KeyPairCreator;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +19,7 @@ import static global.eska.ddk.keygen.utils.Etalon.*;
 import static global.eska.ddk.keygen.utils.HashUtils.sha256;
 import static org.junit.Assert.*;
 
+@Ignore
 @Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -36,7 +32,6 @@ public class DemoApplicationTests {
     @Autowired
     private AccountCreator accountCreator;
 
-    @Ignore
     @Test
     public void createPassphraseTest() {
         String passphrase = passphraseGenerator.createPassphrase();
@@ -44,7 +39,6 @@ public class DemoApplicationTests {
         log.info("Random generated passphrase: {}", passphrase);
     }
 
-    @Ignore
     @Test
     public void createKeyPairTest() {
         // todo: make different tests

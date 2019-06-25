@@ -5,14 +5,21 @@ import global.eska.ddk.api.client.model.*;
 
 import java.util.List;
 
-public interface Client {
+public interface IDDKClient {
 
     Account getAccount(String address) throws DDKApplicationException;
+
     Long getAccountBalance(String address) throws DDKApplicationException;
+
     Transaction getTransaction(String id) throws DDKApplicationException;
+
     List<Transaction> getTransactions(Filter filter, int limit, int offset, Sort... sort) throws DDKApplicationException;
+
     List<Transaction> getTransactionsByHeight(Long height, int limit, int offset) throws DDKApplicationException;
+
     Transaction createTransaction(Transaction transaction, String secret) throws DDKApplicationException;
+
     Block getLastBlock() throws DDKApplicationException;
+
     Block getBlockByHeight(Long height) throws DDKApplicationException;
 }
