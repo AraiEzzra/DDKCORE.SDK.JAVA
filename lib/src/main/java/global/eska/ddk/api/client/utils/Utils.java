@@ -40,7 +40,7 @@ public class Utils {
     }
 
     public <T> T convertMapToObject(ResponseEntity response, Class<T> clazz) throws DDKApplicationException {
-        if (response.getErrors().size() != 0) {
+        if (response.getErrors() != null && response.getErrors().size() != 0) {
             throw new DDKApplicationException("Errors: " + response.getErrors());
         }
         String json = gson.toJson(response.getData());
@@ -50,7 +50,7 @@ public class Utils {
 
 
     public <T> T convertMapTrsListToObj(ResponseEntity response, TypeToken<T> typeToken) throws DDKApplicationException {
-        if (response.getErrors().size() != 0) {
+        if (response.getErrors() != null && response.getErrors().size() != 0) {
             throw new DDKApplicationException("Errors: " + response.getErrors());
         }
         Map<String, Object> mapData = (Map<String, Object>) response.getData();

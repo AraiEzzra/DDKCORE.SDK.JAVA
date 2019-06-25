@@ -80,26 +80,35 @@ After installation you can use library in maven projects by adding dependency:
     // Sort
     Sort sort = new Sort("createdAt", SortDirection.ASC);
     // transfer filter and sort and limit with offset for pagination to getTransactions method
-    List<Transaction> transactions = transactions = ddkClient.getTransactions(filter, 10, 0, sort);
+    List<Transaction> transactions = ddkClient.getTransactions(filter, 10, 0, sort);
+    
+    // Get transactions by height(transfer height, limit and offset)
+    List<Transaction> transactions = ddkClient.getTransactionsByHeight(1, 10, 0);
+    
+    // Get last block
+    Block block = ddkClient.getLastBlock();
+    
+    // Get block by height
+    Block block = ddkClient.getBlockByHeight(HEIGHT);;
     
     // Send transaction(for that moment you can create only TransactionType.SEND and AssetSend)
-        // first of all you should create Asset :
-        AssetSend assetSend = new AssetSend();
-        assetSend.setAmount(50000L);
-        assetSend.setRecipientAddress(RECIPIENT_ADDRESS);
-        
-        // next you should create transaction and set Asset as you can see below:
-        Transaction<AssetSend> transaction = new Transaction<>();
-        transaction.setType(TransactionType.SEND);
-        transaction.setSenderAddress(SENDER_ADDRESS);
-        transaction.setSenderPublicKey(SENDER_PUBLIC_KEY);
-        transaction.setAsset(assetSend);
-        
-        // now send transaction to creation
-        // for signnature transaction you have to transfer sender's secret
-        Transaction transaction = ddkClient.createTransaction(transaction, SECRET);
-        // if transaction valid and node success take transaction you receive transaction with id
-        // you can use this id for get transaction and check if this transaction successfully apply to network
+    // first of all you should create Asset :
+    AssetSend assetSend = new AssetSend();
+    assetSend.setAmount(50000L);
+    assetSend.setRecipientAddress(RECIPIENT_ADDRESS);
+    
+    // next you should create transaction and set Asset as you can see below:
+    Transaction<AssetSend> transaction = new Transaction<>();
+    transaction.setType(TransactionType.SEND);
+    transaction.setSenderAddress(SENDER_ADDRESS);
+    transaction.setSenderPublicKey(SENDER_PUBLIC_KEY);
+    transaction.setAsset(assetSend);
+    
+    // now send transaction to creation
+    // for signnature transaction you have to transfer sender's secret
+    Transaction transaction = ddkClient.createTransaction(transaction, SECRET);
+    // if transaction valid and node success take transaction you receive transaction with id
+    // you can use this id for get transaction and check if this transaction successfully apply to network
 
 ```
 
