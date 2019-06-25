@@ -10,6 +10,7 @@ import global.eska.ddk.keygen.sodium.DDKKeyPairCreator;
 import global.eska.ddk.keygen.sodium.KeyPair;
 import global.eska.ddk.keygen.sodium.KeyPairCreator;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,7 @@ public class DemoApplicationTests {
     @Autowired
     private AccountCreator accountCreator;
 
+    @Ignore
     @Test
     public void createPassphraseTest() {
         String passphrase = passphraseGenerator.createPassphrase();
@@ -42,6 +44,7 @@ public class DemoApplicationTests {
         log.info("Random generated passphrase: {}", passphrase);
     }
 
+    @Ignore
     @Test
     public void createKeyPairTest() {
         // todo: make different tests
